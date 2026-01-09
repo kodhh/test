@@ -3164,9 +3164,14 @@ static void destroy_inodecache(void)
 	kmem_cache_destroy(f2fs_inode_cachep);
 }
 
+extern int crc32_mod_init(void);
 static int __init init_f2fs_fs(void)
 {
 	int err;
+
+	err = crc32_mod_init();
+	if (err)
+		goto fail;
 
 	if (PAGE_SIZE != F2FS_BLKSIZE) {
 		printk("F2FS not supported on PAGE_SIZE(%lu) != %d\n",
@@ -3230,6 +3235,7 @@ fail:
 	return err;
 }
 
+extern void crc32_mod_fini(void);
 static void __exit exit_f2fs_fs(void)
 {
 	f2fs_destroy_post_read_processing();
@@ -3243,6 +3249,7 @@ static void __exit exit_f2fs_fs(void)
 	destroy_node_manager_caches();
 	destroy_inodecache();
 	f2fs_destroy_trace_ios();
+	crc32_mod_fini();
 }
 
 module_init(init_f2fs_fs)

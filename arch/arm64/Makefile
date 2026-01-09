@@ -101,11 +101,11 @@ KBUILD_CPPFLAGS += -Idrivers/mstar2
 plat-$(CONFIG_PLAT_MSTAR)    += mstar
 
 ifneq ($(CONFIG_MSTAR_CHIP),)
-MACHINE  := arch/arm64/arm-boards/$(word 1,$(machine-y))/
-machdirs := $(patsubst %,arch/arm64/arm-boards/%/,$(machine-y))
-platdirs := $(patsubst %,arch/arm64/arm-boards/plat-%/,$(plat-y))
-core-y += arch/arm64/arm-boards/generic/
-core-y += $(machdirs)
+#MACHINE  := arch/arm64/arm-boards/$(word 1,$(machine-y))/
+#machdirs := $(patsubst %,arch/arm64/arm-boards/%/,$(machine-y))
+#platdirs := $(patsubst %,arch/arm64/arm-boards/plat-%/,$(plat-y))
+#core-y += arch/arm64/arm-boards/generic/
+#core-y += $(machdirs)
 #core-y += ../mstar2/hal/$(subst ",,$(CONFIG_MSTAR_CHIP_NAME))/cpu/arm64/
 
 ifeq ($(KBUILD_SRC),)

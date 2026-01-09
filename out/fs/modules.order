@@ -1,0 +1,4 @@
+kernel/fs/exfat/exfat.ko
+kernel/fs/ntfs3/ntfs3.ko
+kernel/fs/btrfs/btrfs.ko
+kernel/fs/f2fs/f2fs.ko

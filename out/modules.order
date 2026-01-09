@@ -1,0 +1,8 @@
+kernel/fs/exfat/exfat.ko
+kernel/fs/ntfs3/ntfs3.ko
+kernel/fs/btrfs/btrfs.ko
+kernel/fs/f2fs/f2fs.ko
+kernel/crypto/xor.ko
+kernel/drivers/usb/storage/uas.ko
+kernel/drivers/mtk_misc/devnode/devnode.ko
+kernel/lib/raid6/raid6_pq.ko

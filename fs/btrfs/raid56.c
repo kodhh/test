@@ -27,10 +27,10 @@
 #include <linux/capability.h>
 #include <linux/ratelimit.h>
 #include <linux/kthread.h>
-#include <linux/raid/pq.h>
+#include "pq.h"
 #include <linux/hash.h>
 #include <linux/list_sort.h>
-#include <linux/raid/xor.h>
+#include "xor.h"
 #include <linux/vmalloc.h>
 #include <asm/div64.h>
 #include "ctree.h"

@@ -244,8 +244,8 @@ config ARCH_MSTAR
 	  Support mstar chip porting
 
 #mstar Kconfig
-source "arch/arm64/arm-boards/Kconfig"
-source "arch/arm64/arm-boards/plat-mstar/Kconfig"
+#source "arch/arm64/arm-boards/Kconfig"
+#source "arch/arm64/arm-boards/plat-mstar/Kconfig"
 
 config PLAT_MSTAR
 	bool

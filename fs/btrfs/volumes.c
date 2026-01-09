@@ -24,7 +24,7 @@
 #include <linux/capability.h>
 #include <linux/ratelimit.h>
 #include <linux/kthread.h>
-#include <linux/raid/pq.h>
+#include "pq.h"
 #include <linux/semaphore.h>
 #include <linux/uuid.h>
 #include <asm/div64.h>

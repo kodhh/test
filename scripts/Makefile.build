@@ -4,11 +4,6 @@
 
 src := $(obj)
 
-ifdef MTK_EXTMOD_OBJ
-src := $(KBUILD_EXTMOD)
-endif
-
-
 PHONY := __build
 __build:
 

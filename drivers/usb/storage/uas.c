@@ -17,7 +17,7 @@
 #include <linux/usb_usual.h>
 #include <linux/usb/hcd.h>
 #include <linux/usb/storage.h>
-#include <linux/usb/uas.h>
+#include "uas.h"
 
 #include <scsi/scsi.h>
 #include <scsi/scsi_eh.h>

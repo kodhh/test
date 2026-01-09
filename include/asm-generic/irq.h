@@ -9,7 +9,7 @@
 #include <mstar/mpatch_macro.h>
 
 #if (MP_PLATFORM_ARCH_GENERAL == 1)
-#include <mach/irqs.h>
+#include <asm/irq.h>
 #else
 #ifndef NR_IRQS
 #define NR_IRQS 64

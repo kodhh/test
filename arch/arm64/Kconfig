@@ -1179,8 +1179,8 @@ config KEYS_COMPAT
 
 endmenu
 
-source "arch/arm64/arm-boards/Kconfig"
-source "arch/arm64/arm-boards/plat-mstar/Kconfig"
+#source "arch/arm64/arm-boards/Kconfig"
+#source "arch/arm64/arm-boards/plat-mstar/Kconfig"
 
 menu "Power management options"
 
