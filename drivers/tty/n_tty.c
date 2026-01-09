@@ -201,17 +201,28 @@ int allow_char[] = { 48, 49, 50, 51, 52, 53, 54, 55, 56, 57 /* 0~9 */,
 #endif
 #endif/*MP_DEBUG_TOOL_KDEBUG*/
 
+/* If we are not echoing the data, perhaps this is a secret so erase it */
+static void zero_buffer(struct tty_struct *tty, u8 *buffer, int size)
+{
+	bool icanon = !!L_ICANON(tty);
+	bool no_echo = !L_ECHO(tty);
+
+	if (icanon && no_echo)
+		memset(buffer, 0x00, size);
+}
+
 static int tty_copy_to_user(struct tty_struct *tty, void __user *to,
 			    size_t tail, size_t n)
 {
 	struct n_tty_data *ldata = tty->disc_data;
 	size_t size = N_TTY_BUF_SIZE - tail;
-	const void *from = read_buf_addr(ldata, tail);
+	void *from = read_buf_addr(ldata, tail);
 	int uncopied;
 
 	if (n > size) {
 		tty_audit_add_data(tty, from, size);
 		uncopied = copy_to_user(to, from, size);
+		zero_buffer(tty, from, size - uncopied);
 		if (uncopied)
 			return uncopied;
 		to += size;
@@ -220,7 +231,9 @@ static int tty_copy_to_user(struct tty_struct *tty, void __user *to,
 	}
 
 	tty_audit_add_data(tty, from, n);
-	return copy_to_user(to, from, n);
+	uncopied = copy_to_user(to, from, n);
+	zero_buffer(tty, from, n - uncopied);
+	return uncopied;
 }
 
 /**
@@ -2193,11 +2206,12 @@ static int copy_from_read_buf(struct tty_struct *tty,
 	n = min(head - ldata->read_tail, N_TTY_BUF_SIZE - tail);
 	n = min(*nr, n);
 	if (n) {
-		const unsigned char *from = read_buf_addr(ldata, tail);
+		unsigned char *from = read_buf_addr(ldata, tail);
 		retval = copy_to_user(*b, from, n);
 		n -= retval;
 		is_eof = n == 1 && *from == EOF_CHAR(tty);
 		tty_audit_add_data(tty, from, n);
+		zero_buffer(tty, from, n);
 		smp_store_release(&ldata->read_tail, ldata->read_tail + n);
 		/* Turn single EOF into zero-length read */
 		if (L_EXTPROC(tty) && ldata->icanon && is_eof &&
