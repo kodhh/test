@@ -19,10 +19,10 @@
 #define BH_TRACE 0
 #include <linux/module.h>
 #include <linux/gfp.h>
-#include "../fs/btrfs/xor.h"
+#include <linux/raid/xor.h>
 #include <linux/jiffies.h>
 #include <linux/preempt.h>
-#include "../fs/btrfs/asm-xor.h"
+#include <asm/xor.h>
 
 #ifndef XOR_SELECT_TEMPLATE
 #define XOR_SELECT_TEMPLATE(x) (x)

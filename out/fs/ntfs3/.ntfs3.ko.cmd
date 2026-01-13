@@ -1,1 +1,1 @@
-cmd_fs/ntfs3/ntfs3.ko := aarch64-linux-gnu-ld -EL -fix-cortex-a53-843419 -r  -T ../scripts/module-common.lds -T ../arch/arm64/kernel/module.lds --build-id  -o fs/ntfs3/ntfs3.ko fs/ntfs3/ntfs3.o fs/ntfs3/ntfs3.mod.o ;  true
+cmd_fs/ntfs3/ntfs3.ko := aarch64-linux-android-ld -EL -fix-cortex-a53-843419 -r  -T ../scripts/module-common.lds -T ../arch/arm64/kernel/module.lds --build-id  -o fs/ntfs3/ntfs3.ko fs/ntfs3/ntfs3.o fs/ntfs3/ntfs3.mod.o ;  true

@@ -19,7 +19,7 @@
  */
 
 #include <linux/export.h>
-#include "../../fs/btrfs/pq.h"
+#include <linux/raid/pq.h>
 
 /* Recover two failed data blocks. */
 static void raid6_2data_recov_intx1(int disks, size_t bytes, int faila,

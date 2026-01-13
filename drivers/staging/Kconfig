@@ -108,4 +108,10 @@ source "drivers/staging/vc04_services/Kconfig"
 
 source "drivers/staging/amazon/Kconfig"
 
+source "drivers/staging/rtl8188fu/Kconfig"
+
+source "drivers/staging/rtl8821CU/Kconfig"
+
+source "drivers/staging/amazon/Kconfig"
+
 endif # STAGING

@@ -1,0 +1,1 @@
+cmd_lib/lz4/lz4_compress.ko := aarch64-linux-android-ld -EL -fix-cortex-a53-843419 -r  -T ../scripts/module-common.lds -T ../arch/arm64/kernel/module.lds --build-id  -o lib/lz4/lz4_compress.ko lib/lz4/lz4_compress.o lib/lz4/lz4_compress.mod.o ;  true

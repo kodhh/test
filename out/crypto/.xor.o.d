@@ -13,7 +13,7 @@ xor.o: ../crypto/xor.c ../include/linux/kconfig.h \
  ../arch/arm64/include/uapi/asm/posix_types.h \
  ../include/uapi/asm-generic/posix_types.h ../include/linux/poison.h \
  ../include/uapi/linux/const.h ../include/linux/kernel.h \
- /mnt/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-gnu-6.3.1/lib/gcc/aarch64-linux-gnu/6.3.1/include/stdarg.h \
+ /mnt/aarch64-linux-android-4.9/lib/gcc/aarch64-linux-android/4.9.x/include/stdarg.h \
  ../include/linux/linkage.h ../include/linux/stringify.h \
  ../include/linux/export.h ../arch/arm64/include/asm/linkage.h \
  ../include/linux/bitops.h ../arch/arm64/include/asm/bitops.h \
@@ -175,5 +175,6 @@ xor.o: ../crypto/xor.c ../include/linux/kconfig.h \
  ../include/linux/kref.h ../include/linux/moduleparam.h \
  ../include/linux/extable.h ../include/linux/rbtree_latch.h \
  ../include/linux/cfi.h ../arch/arm64/include/asm/module.h \
- ../include/asm-generic/module.h ../crypto/../fs/btrfs/xor.h \
- ../crypto/../fs/btrfs/asm-xor.h ../include/linux/prefetch.h
+ ../include/asm-generic/module.h ../include/linux/raid/xor.h \
+ arch/arm64/include/generated/asm/xor.h ../include/asm-generic/xor.h \
+ ../include/linux/prefetch.h

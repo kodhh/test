@@ -1,89 +1,79 @@
-	.arch armv8-a
+	.cpu generic+fp+simd
 	.file	"devicetable-offsets.c"
-// GNU C89 (Linaro GCC 6.3-2017.02) version 6.3.1 20170109 (aarch64-linux-gnu)
-//	compiled by GNU C version 4.8.4, GMP version 6.1.0, MPFR version 3.1.4, MPC version 1.0.3, isl version none
+// GNU C (GCC) version 4.9.x 20150123 (prerelease) (aarch64-linux-android)
+//	compiled by GNU C version 4.8, GMP version 5.0.5, MPFR version 3.1.1, MPC version 1.0.1
 // GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
 // options passed:  -nostdinc -I ../arch/arm64/include
 // -I ./arch/arm64/include/generated/uapi -I ./arch/arm64/include/generated
 // -I ../include -I ./include -I ../arch/arm64/include/uapi
 // -I ../include/uapi -I ./include/generated/uapi -I ../scripts/mod
 // -I scripts/mod -I ../arch/arm64/include -I ../drivers/mstar2
-// -imultiarch aarch64-linux-gnu
-// -iprefix /mnt/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-gnu-6.3.1/bin/../lib/gcc/aarch64-linux-gnu/6.3.1/
-// -isysroot /mnt/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-gnu-6.3.1/bin/../aarch64-linux-gnu/libc
+// -iprefix /mnt/aarch64-linux-android-4.9/bin/../lib/gcc/aarch64-linux-android/4.9.x/
 // -D __KERNEL__ -D CONFIG_AS_LSE=1 -D CC_HAVE_ASM_GOTO
 // -D KBUILD_BASENAME="devicetable_offsets"
 // -D KBUILD_MODNAME="devicetable_offsets"
-// -isystem /mnt/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-gnu-6.3.1/bin/../lib/gcc/aarch64-linux-gnu/6.3.1/include
+// -isystem /mnt/aarch64-linux-android-4.9/bin/../lib/gcc/aarch64-linux-android/4.9.x/include
 // -include ../include/linux/kconfig.h
 // -MD scripts/mod/.devicetable-offsets.s.d
-// ../scripts/mod/devicetable-offsets.c -mlittle-endian -mgeneral-regs-only
-// -mpc-relative-literal-loads -march=armv8-a -mabi=lp64
+// ../scripts/mod/devicetable-offsets.c -mbionic -mlittle-endian
+// -mgeneral-regs-only -mabi=lp64
 // -auxbase-strip scripts/mod/devicetable-offsets.s -g -O2 -Wall -Wundef
 // -Wstrict-prototypes -Wno-trigraphs -Werror=implicit-function-declaration
-// -Wno-format-security -Wno-frame-address -Wframe-larger-than=1536
-// -Wno-unused-but-set-variable -Wunused-const-variable=0
-// -Wdeclaration-after-statement -Wno-pointer-sign -Werror=implicit-int
-// -Werror=strict-prototypes -Werror=date-time
-// -Werror=incompatible-pointer-types -std=gnu90 -fno-strict-aliasing
-// -fno-common -fshort-wchar -fno-peephole2 -fno-asynchronous-unwind-tables
-// -fno-pic -fno-delete-null-pointer-checks -fstack-protector-strong
+// -Wno-format-security -Wframe-larger-than=1536
+// -Wno-unused-but-set-variable -Wdeclaration-after-statement
+// -Wno-pointer-sign -Werror=implicit-int -Werror=strict-prototypes
+// -Werror=date-time -std=gnu90 -fno-strict-aliasing -fno-common
+// -fshort-wchar -fno-peephole2 -fno-asynchronous-unwind-tables -fno-pic
+// -fno-delete-null-pointer-checks -fstack-protector-strong
 // -fno-omit-frame-pointer -fno-optimize-sibling-calls
 // -fno-var-tracking-assignments -femit-struct-debug-baseonly
 // -fno-var-tracking -fno-strict-overflow -fno-merge-all-constants
 // -fmerge-constants -fstack-check=no -fconserve-stack -fverbose-asm
 // --param allow-store-data-races=0
-// options enabled:  -faggressive-loop-optimizations -falign-labels
-// -fauto-inc-dec -fbranch-count-reg -fcaller-saves
-// -fchkp-check-incomplete-type -fchkp-check-read -fchkp-check-write
-// -fchkp-instrument-calls -fchkp-narrow-bounds -fchkp-optimize
-// -fchkp-store-bounds -fchkp-use-static-bounds
-// -fchkp-use-static-const-bounds -fchkp-use-wrappers
-// -fcombine-stack-adjustments -fcompare-elim -fcprop-registers
-// -fcrossjumping -fcse-follow-jumps -fdefer-pop -fdevirtualize
-// -fdevirtualize-speculatively -fdwarf2-cfi-asm -fearly-inlining
-// -feliminate-unused-debug-types -fexpensive-optimizations
-// -fforward-propagate -ffunction-cse -fgcse -fgcse-lm -fgnu-runtime
-// -fgnu-unique -fguess-branch-probability -fhoist-adjacent-loads -fident
-// -fif-conversion -fif-conversion2 -findirect-inlining -finline
-// -finline-atomics -finline-functions-called-once -finline-small-functions
-// -fipa-cp -fipa-cp-alignment -fipa-icf -fipa-icf-functions
-// -fipa-icf-variables -fipa-profile -fipa-pure-const -fipa-ra
-// -fipa-reference -fipa-sra -fira-hoist-pressure -fira-share-save-slots
-// -fira-share-spill-slots -fisolate-erroneous-paths-dereference -fivopts
-// -fkeep-static-consts -fleading-underscore -flifetime-dse -flra-remat
-// -flto-odr-type-merging -fmath-errno -fmerge-constants
+// options enabled:  -faggressive-loop-optimizations -fauto-inc-dec
+// -fbranch-count-reg -fcaller-saves -fcombine-stack-adjustments
+// -fcompare-elim -fcprop-registers -fcrossjumping -fcse-follow-jumps
+// -fdefer-pop -fdevirtualize-speculatively -fdwarf2-cfi-asm
+// -fearly-inlining -feliminate-unused-debug-types
+// -fexpensive-optimizations -fforward-propagate -ffunction-cse -fgcse
+// -fgcse-lm -fgnu-runtime -fgnu-unique -fguess-branch-probability
+// -fhoist-adjacent-loads -fident -fif-conversion -fif-conversion2
+// -findirect-inlining -finline -finline-atomics
+// -finline-functions-called-once -finline-small-functions -fipa-cp
+// -fipa-profile -fipa-pure-const -fipa-reference -fipa-sra
+// -fira-hoist-pressure -fira-share-save-slots -fira-share-spill-slots
+// -fisolate-erroneous-paths-dereference -fivopts -fkeep-static-consts
+// -fleading-underscore -flifetime-dse -fmath-errno -fmerge-constants
 // -fmerge-debug-strings -fmove-loop-invariants -fomit-frame-pointer
-// -foptimize-strlen -fpartial-inlining -fpeephole -fplt
-// -fprefetch-loop-arrays -free -freg-struct-return -freorder-blocks
+// -foptimize-strlen -fpartial-inlining -fpeel-codesize-limit -fpeephole
+// -fplt -fprefetch-loop-arrays -free -freg-struct-return -freorder-blocks
 // -freorder-functions -frerun-cse-after-loop
 // -fsched-critical-path-heuristic -fsched-dep-count-heuristic
 // -fsched-group-heuristic -fsched-interblock -fsched-last-insn-heuristic
-// -fsched-pressure -fsched-rank-heuristic -fsched-spec
-// -fsched-spec-insn-heuristic -fsched-stalled-insns-dep -fschedule-fusion
-// -fschedule-insns -fschedule-insns2 -fsection-anchors
-// -fsemantic-interposition -fshow-column -fshrink-wrap -fsigned-zeros
-// -fsplit-ivs-in-unroller -fsplit-wide-types -fssa-backprop -fssa-phiopt
-// -fstack-protector-strong -fstdarg-opt -fstrict-volatile-bitfields
-// -fsync-libcalls -fthread-jumps -ftoplevel-reorder -ftrapping-math
-// -ftree-bit-ccp -ftree-builtin-call-dce -ftree-ccp -ftree-ch
-// -ftree-coalesce-vars -ftree-copy-prop -ftree-cselim -ftree-dce
+// -fsched-rank-heuristic -fsched-spec -fsched-spec-insn-heuristic
+// -fsched-stalled-insns-dep -fschedule-insns -fschedule-insns2
+// -fsection-anchors -fshow-column -fshrink-wrap -fsigned-zeros
+// -fsplit-ivs-in-unroller -fsplit-wide-types -fstack-protector-all
+// -fstack-protector-strong -fstrict-enum-precision
+// -fstrict-volatile-bitfields -fsync-libcalls -fthread-jumps
+// -ftoplevel-reorder -ftrapping-math -ftree-bit-ccp
+// -ftree-builtin-call-dce -ftree-ccp -ftree-ch -ftree-coalesce-vars
+// -ftree-copy-prop -ftree-copyrename -ftree-cselim -ftree-dce
 // -ftree-dominator-opts -ftree-dse -ftree-forwprop -ftree-fre
 // -ftree-loop-if-convert -ftree-loop-im -ftree-loop-ivcanon
-// -ftree-loop-optimize -ftree-parallelize-loops= -ftree-phiprop -ftree-pre
-// -ftree-pta -ftree-reassoc -ftree-scev-cprop -ftree-sink -ftree-slsr
-// -ftree-sra -ftree-switch-conversion -ftree-tail-merge -ftree-ter
-// -ftree-vrp -funit-at-a-time -fverbose-asm -fzero-initialized-in-bss
-// -mfix-cortex-a53-835769 -mfix-cortex-a53-843419 -mgeneral-regs-only
-// -mglibc -mlittle-endian -momit-leaf-frame-pointer
-// -mpc-relative-literal-loads
+// -ftree-loop-optimize -ftree-loop-vectorize -ftree-parallelize-loops=
+// -ftree-phiprop -ftree-pre -ftree-pta -ftree-reassoc -ftree-scev-cprop
+// -ftree-sink -ftree-slsr -ftree-sra -ftree-switch-conversion
+// -ftree-tail-merge -ftree-ter -ftree-vrp -funit-at-a-time
+// -funroll-codesize-limit -fverbose-asm -fzero-initialized-in-bss
+// -mandroid -mbionic -mfix-cortex-a53-835769 -mfix-cortex-a53-843419
+// -mgeneral-regs-only -mlittle-endian -mlra -momit-leaf-frame-pointer
 
 	.text
 .Ltext0:
 	.cfi_sections	.debug_frame
-	.section	.text.startup,"ax",@progbits
+	.section	.text.startup,"ax",%progbits
 	.align	2
-	.p2align 3,,7
 	.global	main
 	.type	main, %function
 main:
@@ -901,19 +891,17 @@ main:
 	.size	main, .-main
 	.text
 .Letext0:
-	.file 2 "../include/linux/uuid.h"
-	.file 3 "../include/asm-generic/int-ll64.h"
-	.section	.debug_info,"",@progbits
+	.section	.debug_info,"",%progbits
 .Ldebug_info0:
-	.4byte	0xd8
+	.4byte	0x97
 	.2byte	0x4
 	.4byte	.Ldebug_abbrev0
 	.byte	0x8
 	.uleb128 0x1
-	.4byte	.LASF14
+	.4byte	.LASF11
 	.byte	0x1
-	.4byte	.LASF15
-	.4byte	.LASF16
+	.4byte	.LASF12
+	.4byte	.LASF13
 	.4byte	.Ldebug_ranges0+0
 	.8byte	0
 	.4byte	.Ldebug_line0
@@ -949,13 +937,6 @@ main:
 	.byte	0x8
 	.byte	0x7
 	.4byte	.LASF6
-	.uleb128 0x4
-	.string	"u8"
-	.byte	0x3
-	.byte	0x10
-	.4byte	0x30
-	.uleb128 0x5
-	.4byte	0x61
 	.uleb128 0x2
 	.byte	0x8
 	.byte	0x5
@@ -972,31 +953,8 @@ main:
 	.byte	0x1
 	.byte	0x2
 	.4byte	.LASF10
-	.uleb128 0x6
-	.4byte	0x6b
-	.4byte	0x9c
-	.uleb128 0x7
-	.4byte	0xa1
-	.byte	0xf
-	.byte	0
-	.uleb128 0x5
-	.4byte	0x8c
-	.uleb128 0x2
-	.byte	0x8
-	.byte	0x7
-	.4byte	.LASF11
-	.uleb128 0x8
-	.4byte	.LASF12
-	.byte	0x2
-	.byte	0x2c
-	.4byte	0x9c
-	.uleb128 0x8
-	.4byte	.LASF13
-	.byte	0x2
-	.byte	0x2d
-	.4byte	0x9c
-	.uleb128 0x9
-	.4byte	.LASF17
+	.uleb128 0x4
+	.4byte	.LASF14
 	.byte	0x1
 	.byte	0x8
 	.4byte	0x45
@@ -1005,7 +963,7 @@ main:
 	.uleb128 0x1
 	.byte	0x9c
 	.byte	0
-	.section	.debug_abbrev,"",@progbits
+	.section	.debug_abbrev,"",%progbits
 .Ldebug_abbrev0:
 	.uleb128 0x1
 	.uleb128 0x11
@@ -1049,61 +1007,6 @@ main:
 	.byte	0
 	.byte	0
 	.uleb128 0x4
-	.uleb128 0x16
-	.byte	0
-	.uleb128 0x3
-	.uleb128 0x8
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0xb
-	.uleb128 0x49
-	.uleb128 0x13
-	.byte	0
-	.byte	0
-	.uleb128 0x5
-	.uleb128 0x26
-	.byte	0
-	.uleb128 0x49
-	.uleb128 0x13
-	.byte	0
-	.byte	0
-	.uleb128 0x6
-	.uleb128 0x1
-	.byte	0x1
-	.uleb128 0x49
-	.uleb128 0x13
-	.uleb128 0x1
-	.uleb128 0x13
-	.byte	0
-	.byte	0
-	.uleb128 0x7
-	.uleb128 0x21
-	.byte	0
-	.uleb128 0x49
-	.uleb128 0x13
-	.uleb128 0x2f
-	.uleb128 0xb
-	.byte	0
-	.byte	0
-	.uleb128 0x8
-	.uleb128 0x34
-	.byte	0
-	.uleb128 0x3
-	.uleb128 0xe
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0xb
-	.uleb128 0x49
-	.uleb128 0x13
-	.uleb128 0x3f
-	.uleb128 0x19
-	.uleb128 0x3c
-	.uleb128 0x19
-	.byte	0
-	.byte	0
-	.uleb128 0x9
 	.uleb128 0x2e
 	.byte	0
 	.uleb128 0x3f
@@ -1129,7 +1032,7 @@ main:
 	.byte	0
 	.byte	0
 	.byte	0
-	.section	.debug_aranges,"",@progbits
+	.section	.debug_aranges,"",%progbits
 	.4byte	0x2c
 	.2byte	0x2
 	.4byte	.Ldebug_info0
@@ -1141,55 +1044,49 @@ main:
 	.8byte	.LFE9-.LFB9
 	.8byte	0
 	.8byte	0
-	.section	.debug_ranges,"",@progbits
+	.section	.debug_ranges,"",%progbits
 .Ldebug_ranges0:
 	.8byte	.LFB9
 	.8byte	.LFE9
 	.8byte	0
 	.8byte	0
-	.section	.debug_line,"",@progbits
+	.section	.debug_line,"",%progbits
 .Ldebug_line0:
-	.section	.debug_str,"MS",@progbits,1
+	.section	.debug_str,"MS",%progbits,1
 .LASF5:
 	.string	"long long int"
 .LASF4:
 	.string	"unsigned int"
-.LASF1:
-	.string	"unsigned char"
-.LASF17:
+.LASF13:
+	.string	"/mnt/test/out"
+.LASF14:
 	.string	"main"
 .LASF8:
 	.string	"long unsigned int"
 .LASF6:
 	.string	"long long unsigned int"
-.LASF14:
-	.ascii	"GNU C89 6.3.1 20170109 -mlittle-endian -mgeneral-regs-only -"
-	.ascii	"mpc-relative-literal-loads -march=armv8-a -mabi=lp64 -g -O2 "
-	.ascii	"-std=gnu90 -fno-strict-aliasing -fno-common -fshort-wchar -f"
-	.ascii	"no-peephole2 -fno-asynchronous-unwind-tables -fno-pic -fno-d"
-	.ascii	"elete-null-pointer-checks -fstack-protector-strong -fn"
-	.string	"o-omit-frame-pointer -fno-optimize-sibling-calls -fno-var-tracking-assignments -femit-struct-debug-baseonly -fno-var-tracking -fno-strict-overflow -fno-merge-all-constants -fmerge-constants -fstack-check=no -fconserve-stack --param allow-store-data-races=0"
-.LASF12:
-	.string	"uuid_le_index"
-.LASF16:
-	.string	"/mnt/android_kernel_amazon_clara/out"
+.LASF1:
+	.string	"unsigned char"
 .LASF9:
 	.string	"char"
 .LASF7:
 	.string	"long int"
-.LASF2:
-	.string	"short int"
 .LASF10:
 	.string	"_Bool"
 .LASF3:
 	.string	"short unsigned int"
 .LASF0:
 	.string	"signed char"
-.LASF13:
-	.string	"uuid_be_index"
 .LASF11:
-	.string	"sizetype"
-.LASF15:
+	.ascii	"GNU C 4.9.x 20150123 (prerelease) -mbionic -mlittle-endian -"
+	.ascii	"mgeneral-regs-only -mabi=lp64 -g -O2 -std=gnu90 -fno-strict-"
+	.ascii	"aliasing -fno-common -fshort-wchar -fno-peephole2 -fno-async"
+	.ascii	"hronous-unwind-tables -fno-pic -fno-delete-null-pointer-chec"
+	.ascii	"ks -fstack-protector-strong -fn"
+	.string	"o-omit-frame-pointer -fno-optimize-sibling-calls -fno-var-tracking-assignments -femit-struct-debug-baseonly -fno-var-tracking -fno-strict-overflow -fno-merge-all-constants -fmerge-constants -fstack-check=no -fconserve-stack --param allow-store-data-races=0"
+.LASF2:
+	.string	"short int"
+.LASF12:
 	.string	"../scripts/mod/devicetable-offsets.c"
-	.ident	"GCC: (Linaro GCC 6.3-2017.02) 6.3.1 20170109"
-	.section	.note.GNU-stack,"",@progbits
+	.ident	"GCC: (GNU) 4.9.x 20150123 (prerelease)"
+	.section	.note.GNU-stack,"",%progbits

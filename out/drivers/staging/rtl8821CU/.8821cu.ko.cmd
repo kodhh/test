@@ -1,0 +1,1 @@
+cmd_drivers/staging/rtl8821CU/8821cu.ko := aarch64-linux-android-ld -EL -fix-cortex-a53-843419 -r  -T ../scripts/module-common.lds -T ../arch/arm64/kernel/module.lds --build-id  -o drivers/staging/rtl8821CU/8821cu.ko drivers/staging/rtl8821CU/8821cu.o drivers/staging/rtl8821CU/8821cu.mod.o ;  true

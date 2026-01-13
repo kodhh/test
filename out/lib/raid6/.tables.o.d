@@ -17,7 +17,7 @@ tables.o: lib/raid6/tables.c ../include/linux/kconfig.h \
  ../arch/arm64/include/uapi/asm/posix_types.h \
  ../include/uapi/asm-generic/posix_types.h ../include/linux/threads.h \
  ../include/linux/kernel.h \
- /mnt/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-gnu-6.3.1/lib/gcc/aarch64-linux-gnu/6.3.1/include/stdarg.h \
+ /mnt/aarch64-linux-android-4.9/lib/gcc/aarch64-linux-android/4.9.x/include/stdarg.h \
  ../include/linux/linkage.h ../include/linux/stringify.h \
  ../include/linux/export.h ../arch/arm64/include/asm/linkage.h \
  ../include/linux/bitops.h ../arch/arm64/include/asm/bitops.h \

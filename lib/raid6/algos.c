@@ -16,7 +16,7 @@
  * Algorithm list and algorithm selection for RAID-6
  */
 
-#include "../../fs/btrfs/pq.h"
+#include <linux/raid/pq.h>
 #ifndef __KERNEL__
 #include <sys/mman.h>
 #include <stdio.h>

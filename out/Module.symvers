@@ -1,3 +1,4 @@
+0x0c222eb5	lz4_compress	lib/lz4/lz4_compress	EXPORT_SYMBOL
 0xd9e91f83	raid6_vgfmul	lib/raid6/raid6_pq	EXPORT_SYMBOL
 0x15fe0cd3	raid6_gfexp	lib/raid6/raid6_pq	EXPORT_SYMBOL
 0xe4b051cf	raid6_datap_recov	lib/raid6/raid6_pq	EXPORT_SYMBOL_GPL
