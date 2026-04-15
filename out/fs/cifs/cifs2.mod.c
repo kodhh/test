@@ -59,6 +59,7 @@ __attribute__((section("__versions"))) = {
 	{ 0x54ecb4da, __VMLINUX_SYMBOL_STR(migrate_page) },
 	{ 0xd9efc924, __VMLINUX_SYMBOL_STR(kill_anon_super) },
 	{ 0xb8b043f2, __VMLINUX_SYMBOL_STR(kfree_link) },
+	{ 0xa276d25a, __VMLINUX_SYMBOL_STR(send_sig) },
 	{ 0xf3cec182, __VMLINUX_SYMBOL_STR(seq_escape) },
 	{ 0x79aa04a2, __VMLINUX_SYMBOL_STR(get_random_bytes) },
 	{ 0xdf2ba5b2, __VMLINUX_SYMBOL_STR(single_release) },
@@ -114,6 +115,7 @@ __attribute__((section("__versions"))) = {
 	{ 0xe2d5255a, __VMLINUX_SYMBOL_STR(strcmp) },
 	{ 0x181c3e94, __VMLINUX_SYMBOL_STR(down_read) },
 	{ 0xd3bc530e, __VMLINUX_SYMBOL_STR(out_of_line_wait_on_bit_lock) },
+	{ 0xb88c593a, __VMLINUX_SYMBOL_STR(down_write_trylock) },
 	{ 0xe0d9626c, __VMLINUX_SYMBOL_STR(end_page_writeback) },
 	{ 0xece784c2, __VMLINUX_SYMBOL_STR(rb_first) },
 	{ 0xab40cca9, __VMLINUX_SYMBOL_STR(__init_waitqueue_head) },
@@ -212,7 +214,6 @@ __attribute__((section("__versions"))) = {
 	{ 0x9ab4f05b, __VMLINUX_SYMBOL_STR(lock_two_nondirectories) },
 	{ 0x5e95b1cd, __VMLINUX_SYMBOL_STR(current_umask) },
 	{ 0x63c8a7e0, __VMLINUX_SYMBOL_STR(locks_lock_inode_wait) },
-	{ 0x18a8c593, __VMLINUX_SYMBOL_STR(force_sig) },
 	{ 0x4482cdb, __VMLINUX_SYMBOL_STR(__refrigerator) },
 	{ 0x4898ffa4, __VMLINUX_SYMBOL_STR(crypto_destroy_tfm) },
 	{ 0x64aef35e, __VMLINUX_SYMBOL_STR(__module_put_and_exit) },
@@ -240,6 +241,7 @@ __attribute__((section("__versions"))) = {
 	{ 0x777dfb07, __VMLINUX_SYMBOL_STR(finish_open) },
 	{ 0x37a0cba, __VMLINUX_SYMBOL_STR(kfree) },
 	{ 0xd72a8319, __VMLINUX_SYMBOL_STR(iunique) },
+	{ 0xebb16282, __VMLINUX_SYMBOL_STR(truncate_pagecache_range) },
 	{ 0x69ad2f20, __VMLINUX_SYMBOL_STR(kstrtouint) },
 	{ 0xd54d9f09, __VMLINUX_SYMBOL_STR(generic_permission) },
 	{ 0x4829a47e, __VMLINUX_SYMBOL_STR(memcpy) },
@@ -295,4 +297,4 @@ __attribute__((section(".modinfo"))) =
 "depends=";
 
 
-MODULE_INFO(srcversion, "EF95FBAB920E507DB206C04");
+MODULE_INFO(srcversion, "01B9B22F2EA0087FD501A8F");

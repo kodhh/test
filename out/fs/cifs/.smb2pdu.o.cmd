@@ -5,6 +5,7 @@ source_fs/cifs/smb2pdu.o := ../fs/cifs/smb2pdu.c
 deps_fs/cifs/smb2pdu.o := \
     $(wildcard include/config/cifs/stats.h) \
     $(wildcard include/config/cifs/smb311.h) \
+    $(wildcard include/config/cifs/dfs/upcall.h) \
     $(wildcard include/config/cifs/upcall.h) \
   ../include/linux/fs.h \
     $(wildcard include/config/sysfs.h) \
@@ -1466,7 +1467,6 @@ deps_fs/cifs/smb2pdu.o := \
   ../include/linux/unaligned/generic.h \
   ../fs/cifs/smbfsctl.h \
   ../fs/cifs/cifsproto.h \
-    $(wildcard include/config/cifs/dfs/upcall.h) \
     $(wildcard include/config/cifs/allow/insecure/legacy.h) \
   ../include/linux/nls.h \
   ../fs/cifs/smb2proto.h \

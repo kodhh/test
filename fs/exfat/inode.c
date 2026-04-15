@@ -12,6 +12,7 @@
 #include <linux/writeback.h>
 #include <linux/uio.h>
 #include <linux/random.h>
+#include <linux/migrate.h>
 
 #include "exfat_fs.h"
 
@@ -488,6 +489,88 @@ int exfat_block_truncate_page(struct inode *inode, loff_t from)
 	return block_truncate_page(inode->i_mapping, from, exfat_get_block);
 }
 
+#ifdef CONFIG_MP_CMA_PATCH_MIGRATION_FILTER
+
+#include <linux/mm.h>
+#include <linux/pfn.h>
+
+/*
+ * CMA 区域定义 - 根据 /proc/cmdline 中的 CMA0~CMA5 硬编码
+ * 格式: { .start = 起始地址, .end = 结束地址 }
+ */
+static const struct {
+    phys_addr_t start;
+    phys_addr_t end;
+} cma_regions[] = {
+    /* CMA0: MIU0_CMA_OTHERS */
+    { .start = 0x07800000, .end = 0x0BFFFFFF },
+    /* CMA1: XC_MAIN_FRAME_BUF */
+    { .start = 0x0C000000, .end = 0x107FFFFF },
+    /* CMA2: VIDEO_ENCODER */
+    { .start = 0x10800000, .end = 0x11FFFFFF },
+    /* CMA3: VDEC_FRAME_BUF_STR_MBOOT */
+    { .start = 0x12000000, .end = 0x29BFFFFF },
+    /* CMA4: GPU_DIP_MEM */
+    { .start = 0x72800000, .end = 0x783FFFFF },
+    /* CMA5: GOP_MALI_BUF */
+    { .start = 0x78400000, .end = 0x7FFFFFFF },
+};
+
+/**
+ * cifs_is_cma_page - 检查页面是否位于 CMA 区域内
+ * @page: 要检查的页面
+ *
+ * 通过页面的物理地址判断是否属于 cmdline 中定义的 CMA 区域。
+ * 返回: true 如果是 CMA 页面, false 否则
+ */
+static bool exfat_is_cma_page(struct page *page)
+{
+    phys_addr_t paddr;
+    int i;
+
+    if (!page)
+        return false;
+
+    /* 获取页面的物理地址 */
+    paddr = page_to_phys(page);
+
+    /* 遍历所有 CMA 区域，检查物理地址是否在范围内 */
+    for (i = 0; i < ARRAY_SIZE(cma_regions); i++) {
+        if (paddr >= cma_regions[i].start && paddr <= cma_regions[i].end)
+            return true;
+    }
+
+    return false;
+}
+
+/**
+ * cifs_migrate_page - CIFS 页面迁移函数（带 CMA 检查）
+ */
+static int exfat_migrate_page(struct address_space *mapping,
+                             struct page *newpage, struct page *page,
+                             enum migrate_mode mode)
+{
+    /* 
+     * 拒绝迁移到 CMA 区域内的页面
+     * 这可以防止将非 CMA 页面的数据复制到 CMA 区域内
+     */
+    if (exfat_is_cma_page(newpage))
+        return -EBUSY;
+
+    /* 拒绝迁移正在回写的页面 */
+    if (PageWriteback(page))
+        return -EBUSY;
+
+    /* 异步模式下拒绝迁移脏页 */
+    if (PageDirty(page) && mode != MIGRATE_SYNC)
+        return -EBUSY;
+
+    /* 使用通用迁移函数 */
+    return migrate_page(mapping, newpage, page, mode);
+}
+
+#endif /* CONFIG_MP_CMA_PATCH_MIGRATION_FILTER */
+
 static const struct address_space_operations exfat_aops = {
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 18, 0)
 	.dirty_folio	= block_dirty_folio,
@@ -504,7 +587,10 @@ static const struct address_space_operations exfat_aops = {
 	.write_begin	= exfat_write_begin,
 	.write_end	= exfat_write_end,
 	.direct_IO	= exfat_direct_IO,
-	.bmap		= exfat_aop_bmap
+	.bmap		= exfat_aop_bmap,
+#ifdef CONFIG_MP_CMA_PATCH_MIGRATION_FILTER
+	.migratepage = exfat_migrate_page,
+#endif
 };
 
 static struct exfat_inode_info *exfat_inode_tree_find(struct super_block *sb,
@@ -616,6 +702,10 @@ static int exfat_fill_inode(struct inode *inode, struct exfat_dir_entry *info)
 	inode->i_gid = sbi->options.fs_gid;
 	inode_inc_iversion(inode);
 	inode->i_generation = prandom_u32();
+
+#ifdef CONFIG_MP_CMA_PATCH_MIGRATION_FILTER
+	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER_MOVABLE);
+#endif
 
 	if (info->attr & ATTR_SUBDIR) { /* directory */
 		inode->i_generation &= ~1;

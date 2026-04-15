@@ -3,6 +3,7 @@ cmd_fs/exfat/inode.o := aarch64-linux-gnu-gcc -Wp,-MD,fs/exfat/.inode.o.d -nostd
 source_fs/exfat/inode.o := ../fs/exfat/inode.c
 
 deps_fs/exfat/inode.o := \
+    $(wildcard include/config/mp/cma/patch/migration/filter.h) \
   ../include/linux/init.h \
     $(wildcard include/config/debug/rodata.h) \
     $(wildcard include/config/debug/set/module/ronx.h) \
@@ -64,7 +65,6 @@ deps_fs/exfat/inode.o := \
     $(wildcard include/config/mp/cma/patch/pool/utopia/to/kernel.h) \
     $(wildcard include/config/debug/lock/alloc.h) \
     $(wildcard include/config/migration.h) \
-    $(wildcard include/config/mp/cma/patch/migration/filter.h) \
   ../include/linux/linkage.h \
   ../include/linux/stringify.h \
   ../include/linux/export.h \
@@ -1158,6 +1158,11 @@ deps_fs/exfat/inode.o := \
   ../include/uapi/linux/random.h \
   ../include/linux/irqnr.h \
   ../include/uapi/linux/irqnr.h \
+  ../include/linux/migrate.h \
+  ../include/linux/mempolicy.h \
+    $(wildcard include/config/tmpfs.h) \
+    $(wildcard include/config/arch/enable/hugepage/migration.h) \
+  ../include/uapi/linux/mempolicy.h \
   ../fs/exfat/exfat_fs.h \
     $(wildcard include/config/exfat/virtual/xattr.h) \
   ../include/linux/nls.h \
