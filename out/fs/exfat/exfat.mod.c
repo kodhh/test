@@ -74,7 +74,6 @@ __attribute__((section("__versions"))) = {
 	{ 0x6b089440, __VMLINUX_SYMBOL_STR(__mutex_init) },
 	{ 0x27e1a049, __VMLINUX_SYMBOL_STR(printk) },
 	{ 0x30537643, __VMLINUX_SYMBOL_STR(d_rehash) },
-	{ 0x449ad0a7, __VMLINUX_SYMBOL_STR(memcmp) },
 	{ 0x46fbcbac, __VMLINUX_SYMBOL_STR(write_inode_now) },
 	{ 0x7c1372e8, __VMLINUX_SYMBOL_STR(panic) },
 	{ 0x6b010b3c, __VMLINUX_SYMBOL_STR(mpage_writepages) },

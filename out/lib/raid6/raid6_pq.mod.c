@@ -30,6 +30,7 @@ __attribute__((section("__versions"))) = {
 	{ 0x93fca811, __VMLINUX_SYMBOL_STR(__get_free_pages) },
 	{ 0xdb7305a1, __VMLINUX_SYMBOL_STR(__stack_chk_fail) },
 	{ 0x4302d0eb, __VMLINUX_SYMBOL_STR(free_pages) },
+	{ 0x4829a47e, __VMLINUX_SYMBOL_STR(memcpy) },
 	{ 0x8f678b07, __VMLINUX_SYMBOL_STR(__stack_chk_guard) },
 };
 

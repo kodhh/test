@@ -1,1 +1,1 @@
-cmd_crypto/crc32_generic.ko := aarch64-linux-android-ld -EL -fix-cortex-a53-843419 -r  -T ../scripts/module-common.lds -T ../arch/arm64/kernel/module.lds --build-id  -o crypto/crc32_generic.ko crypto/crc32_generic.o crypto/crc32_generic.mod.o ;  true
+cmd_crypto/crc32_generic.ko := aarch64-linux-gnu-ld -EL -fix-cortex-a53-843419 -r  -T ../scripts/module-common.lds -T ../arch/arm64/kernel/module.lds --build-id  -o crypto/crc32_generic.ko crypto/crc32_generic.o crypto/crc32_generic.mod.o ;  true

@@ -260,7 +260,7 @@ static struct vfsmount *cifs_dfs_do_refmount(struct dentry *mntpt,
 	if (IS_ERR(mountdata))
 		return (struct vfsmount *)mountdata;
 
-	mnt = vfs_submount(mntpt, &cifs_fs_type, devname, mountdata);
+	mnt = vfs_submount(mntpt, &cifs2_fs_type, devname, mountdata);
 	kfree(mountdata);
 	kfree(devname);
 	return mnt;

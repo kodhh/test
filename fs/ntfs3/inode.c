@@ -14,6 +14,7 @@
 #include <linux/uio.h>
 #include <linux/version.h>
 #include <linux/writeback.h>
+#include <linux/migrate.h>
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 16, 0)
 #include <linux/iversion.h>
@@ -399,6 +400,10 @@ end_enum:
 		goto out;
 	}
 
+#ifdef CONFIG_MP_CMA_PATCH_MIGRATION_FILTER
+	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER_MOVABLE);
+#endif
+
 	if (S_ISDIR(mode)) {
 		ni->std_fa |= FILE_ATTRIBUTE_DIRECTORY;
 
@@ -421,7 +426,6 @@ end_enum:
 		ni->std_fa &= ~FILE_ATTRIBUTE_DIRECTORY;
 
 		set_nlink(inode, names);
-
 		inode->i_op = &ntfs_file_inode_operations;
 		inode->i_fop = &ntfs_file_operations;
 		inode->i_mapping->a_ops =
@@ -1120,80 +1124,85 @@ int inode_write_data(struct inode *inode, const void *data, size_t bytes)
  * number of bytes to for REPARSE_DATA_BUFFER(IO_REPARSE_TAG_SYMLINK)
  * for unicode string of 'uni_len' length
  */
-static inline u32 ntfs_reparse_bytes(u32 uni_len)
+static inline u32 ntfs_reparse_bytes(u32 uni_len, bool is_absolute)
 {
-	/* header + unicode string + decorated unicode string */
-	return sizeof(short) * (2 * uni_len + 4) +
-	       offsetof(struct REPARSE_DATA_BUFFER,
-			SymbolicLinkReparseBuffer.PathBuffer);
+        /* header + unicode string + decorated unicode string */
+        return sizeof(short) * (2 * uni_len + (is_absolute ? 4 : 0)) +
+               offsetof(struct REPARSE_DATA_BUFFER,
+                        SymbolicLinkReparseBuffer.PathBuffer);
 }
 
 static struct REPARSE_DATA_BUFFER *
 ntfs_create_reparse_buffer(struct ntfs_sb_info *sbi, const char *symname,
-			   u32 size, u16 *nsize)
+                           u32 size, u16 *nsize)
 {
-	int i, err;
-	struct REPARSE_DATA_BUFFER *rp;
-	__le16 *rp_name;
-	typeof(rp->SymbolicLinkReparseBuffer) *rs;
+        int i, err;
+        struct REPARSE_DATA_BUFFER *rp;
+        __le16 *rp_name;
+        typeof(rp->SymbolicLinkReparseBuffer) *rs;
+        bool is_absolute;   // 【新增1】
 
-	rp = ntfs_zalloc(ntfs_reparse_bytes(2 * size + 2));
-	if (!rp)
-		return ERR_PTR(-ENOMEM);
+        is_absolute = (strlen(symname) > 1 && symname[1] == ':');  // 【新增2】
 
-	rs = &rp->SymbolicLinkReparseBuffer;
-	rp_name = rs->PathBuffer;
+        rp = ntfs_zalloc(ntfs_reparse_bytes(2 * size + 2, is_absolute));  // 【修改】
+        if (!rp)
+                return ERR_PTR(-ENOMEM);
 
-	/* Convert link name to utf16 */
-	err = ntfs_nls_to_utf16(sbi, symname, size,
-				(struct cpu_str *)(rp_name - 1), 2 * size,
-				UTF16_LITTLE_ENDIAN);
-	if (err < 0)
-		goto out;
+        rs = &rp->SymbolicLinkReparseBuffer;
+        rp_name = rs->PathBuffer;
 
-	/* err = the length of unicode name of symlink */
-	*nsize = ntfs_reparse_bytes(err);
+        /* Convert link name to utf16 */
+        err = ntfs_nls_to_utf16(sbi, symname, size,
+                                (struct cpu_str *)(rp_name - 1), 2 * size,
+                                UTF16_LITTLE_ENDIAN);
+        if (err < 0)
+                goto out;
 
-	if (*nsize > sbi->reparse.max_size) {
-		err = -EFBIG;
-		goto out;
-	}
+        /* err = the length of unicode name of symlink */
+        *nsize = ntfs_reparse_bytes(err, is_absolute);  // 【修改】
 
-	/* translate linux '/' into windows '\' */
-	for (i = 0; i < err; i++) {
-		if (rp_name[i] == cpu_to_le16('/'))
-			rp_name[i] = cpu_to_le16('\\');
-	}
+        if (*nsize > sbi->reparse.max_size) {
+                err = -EFBIG;
+                goto out;
+        }
 
-	rp->ReparseTag = IO_REPARSE_TAG_SYMLINK;
-	rp->ReparseDataLength =
-		cpu_to_le16(*nsize - offsetof(struct REPARSE_DATA_BUFFER,
-					      SymbolicLinkReparseBuffer));
+        /* translate linux '/' into windows '\' */
+        for (i = 0; i < err; i++) {
+                if (rp_name[i] == cpu_to_le16('/'))
+                        rp_name[i] = cpu_to_le16('\\');
+        }
 
-	/* PrintName + SubstituteName */
-	rs->SubstituteNameOffset = cpu_to_le16(sizeof(short) * err);
-	rs->SubstituteNameLength = cpu_to_le16(sizeof(short) * err + 8);
-	rs->PrintNameLength = rs->SubstituteNameOffset;
+        rp->ReparseTag = IO_REPARSE_TAG_SYMLINK;
+        rp->ReparseDataLength =
+                cpu_to_le16(*nsize - offsetof(struct REPARSE_DATA_BUFFER,
+                                              SymbolicLinkReparseBuffer));
 
-	/*
-	 * TODO: use relative path if possible to allow windows to parse this path
-	 * 0-absolute path 1- relative path (SYMLINK_FLAG_RELATIVE)
-	 */
-	rs->Flags = 0;
+        /* PrintName + SubstituteName */
+        rs->SubstituteNameOffset = cpu_to_le16(sizeof(short) * err);
+        rs->SubstituteNameLength = cpu_to_le16(sizeof(short) * err + (is_absolute ? 8 : 0));  // 【修改】
+        rs->PrintNameLength = rs->SubstituteNameOffset;
 
-	memmove(rp_name + err + 4, rp_name, sizeof(short) * err);
+        /*
+         * TODO: use relative path if possible to allow windows to parse this path
+         * 0-absolute path 1- relative path (SYMLINK_FLAG_RELATIVE)
+         */
+        rs->Flags = cpu_to_le32(is_absolute ? 0 : SYMLINK_FLAG_RELATIVE);  // 【修改】
 
-	/* decorate SubstituteName */
-	rp_name += err;
-	rp_name[0] = cpu_to_le16('\\');
-	rp_name[1] = cpu_to_le16('?');
-	rp_name[2] = cpu_to_le16('?');
-	rp_name[3] = cpu_to_le16('\\');
+        memmove(rp_name + err + (is_absolute ? 4 : 0), rp_name, sizeof(short) * err);  // 【修改】
 
-	return rp;
+        if (is_absolute) {  // 【新增条件包裹】
+                /* decorate SubstituteName */
+                rp_name += err;
+                rp_name[0] = cpu_to_le16('\\');
+                rp_name[1] = cpu_to_le16('?');
+                rp_name[2] = cpu_to_le16('?');
+                rp_name[3] = cpu_to_le16('\\');
+        }
+
+        return rp;
 out:
-	ntfs_free(rp);
-	return ERR_PTR(err);
+        ntfs_free(rp);
+        return ERR_PTR(err);
 }
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
@@ -1579,6 +1588,10 @@ struct inode *ntfs_create_inode(
 	inode->i_generation = le16_to_cpu(rec->seq);
 
 	dir->i_mtime = dir->i_ctime = inode->i_atime;
+
+#ifdef CONFIG_MP_CMA_PATCH_MIGRATION_FILTER
+	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER_MOVABLE);
+#endif
 
 	if (is_dir) {
 		if (dir->i_mode & S_ISGID)
@@ -2053,6 +2066,21 @@ const struct inode_operations ntfs_link_inode_operations = {
 	.set_acl = ntfs_set_acl,
 };
 
+static int ntfs_migrate_page(struct address_space *mapping,
+			     struct page *newpage, struct page *page,
+			     enum migrate_mode mode)
+{
+    // 驱动的职责：拒绝迁移正在回写或处于不稳定状态的页面
+	if (PageWriteback(page))
+		return -EBUSY;
+        
+	if (PageDirty(page) && mode != MIGRATE_SYNC)
+		return -EBUSY;
+
+    // 通用的 migrate_page 足以应对没有特殊私有数据的 CIFS/NTFS3 页面
+	return migrate_page(mapping, newpage, page, mode);
+}
+
 const struct address_space_operations ntfs_aops = {
 	.readpage = ntfs_readpage,
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 8, 0)
@@ -2066,6 +2094,9 @@ const struct address_space_operations ntfs_aops = {
 	.write_end = ntfs_write_end,
 	.direct_IO = ntfs_direct_IO,
 	.bmap = ntfs_bmap,
+#ifdef CONFIG_MP_CMA_PATCH_MIGRATION_FILTER
+    .migratepage = ntfs_migrate_page,
+#endif
 };
 
 const struct address_space_operations ntfs_aops_cmpr = {
@@ -2074,5 +2105,8 @@ const struct address_space_operations ntfs_aops_cmpr = {
 	.readahead = ntfs_readahead,
 #else
 	.readpages = ntfs_readpages,
+#endif
+#ifdef CONFIG_MP_CMA_PATCH_MIGRATION_FILTER
+    .migratepage = ntfs_migrate_page, 
 #endif
 };

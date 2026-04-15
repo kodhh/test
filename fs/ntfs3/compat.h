@@ -42,6 +42,7 @@
 #define struct_size(p, member, n) (sizeof(*(p)) + n * sizeof(*(p)->member))
 #endif
 
+
 #ifndef SECTOR_SHIFT
 #define SECTOR_SHIFT 9
 #endif

@@ -29,9 +29,7 @@
 #include "cifs_debug.h"
 #include "cifs_fs_sb.h"
 #include "cifs_unicode.h"
-#ifdef CONFIG_CIFS_SMB2
 #include "smb2proto.h"
-#endif
 
 /*
  * M-F Symlink Functions - Begin
@@ -317,6 +315,7 @@ out:
 	return rc;
 }
 
+#ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
 /*
  * SMB 1.0 Protocol specific functions
  */
@@ -403,11 +402,11 @@ cifs_create_mf_symlink(unsigned int xid, struct cifs_tcon *tcon,
 	CIFSSMBClose(xid, tcon, fid.netfid);
 	return rc;
 }
+#endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
 
 /*
  * SMB 2.1/SMB3 Protocol specific functions
  */
-#ifdef CONFIG_CIFS_SMB2
 int
 smb3_query_mf_symlink(unsigned int xid, struct cifs_tcon *tcon,
 		      struct cifs_sb_info *cifs_sb, const unsigned char *path,
@@ -530,7 +529,6 @@ smb3_create_mf_symlink(unsigned int xid, struct cifs_tcon *tcon,
 	kfree(utf16_path);
 	return rc;
 }
-#endif /* CONFIG_CIFS_SMB2 */
 
 /*
  * M-F Symlink Functions - End
@@ -564,11 +562,15 @@ cifs_hardlink(struct dentry *old_file, struct inode *inode,
 		goto cifs_hl_exit;
 	}
 
+#ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
 	if (tcon->unix_ext)
 		rc = CIFSUnixCreateHardLink(xid, tcon, from_name, to_name,
 					    cifs_sb->local_nls,
 					    cifs_remap(cifs_sb));
 	else {
+#else
+	{
+#endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
 		server = tcon->ses->server;
 		if (!server->ops->create_hardlink) {
 			rc = -ENOSYS;
@@ -717,10 +719,12 @@ cifs_symlink(struct inode *inode, struct dentry *direntry, const char *symname)
 	/* BB what if DFS and this volume is on different share? BB */
 	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_MF_SYMLINKS)
 		rc = create_mf_symlink(xid, pTcon, cifs_sb, full_path, symname);
+#ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
 	else if (pTcon->unix_ext)
 		rc = CIFSUnixCreateSymLink(xid, pTcon, full_path, symname,
 					   cifs_sb->local_nls,
 					   cifs_remap(cifs_sb));
+#endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
 	/* else
 	   rc = CIFSCreateReparseSymLink(xid, pTcon, fromName, toName,
 					cifs_sb_target->local_nls); */

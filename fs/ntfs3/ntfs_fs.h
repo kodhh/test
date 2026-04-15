@@ -917,6 +917,9 @@ static inline bool run_is_empty(struct runs_tree *run)
 }
 
 /* NTFS uses quad aligned bitmaps */
+#ifdef bitmap_size
+#undef bitmap_size
+#endif
 static inline size_t bitmap_size(size_t bits)
 {
 	return QuadAlign((bits + 7) >> 3);

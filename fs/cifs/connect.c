@@ -53,9 +53,7 @@
 #include "nterr.h"
 #include "rfc1002pdu.h"
 #include "fscache.h"
-#ifdef CONFIG_CIFS_SMB2
 #include "smb2proto.h"
-#endif
 
 #define CIFS_PORT 445
 #define RFC1001_PORT 139
@@ -382,9 +380,7 @@ cifs_reconnect(struct TCP_Server_Info *server)
 		server->tcpStatus = CifsNeedReconnect;
 	spin_unlock(&GlobalMid_Lock);
 	server->maxBuf = 0;
-#ifdef CONFIG_CIFS_SMB2
 	server->max_read = 0;
-#endif
 
 	cifs_dbg(FYI, "Reconnecting tcp session\n");
 
@@ -716,6 +712,49 @@ handle_mid(struct mid_q_entry *mid, struct TCP_Server_Info *server,
 			server->smallbuf = NULL;
 	}
 	dequeue_mid(mid, malformed);
+}
+
+int
+cifs_enable_signing(struct TCP_Server_Info *server, bool mnt_sign_required)
+{
+	bool srv_sign_required = server->sec_mode & server->vals->signing_required;
+	bool srv_sign_enabled = server->sec_mode & server->vals->signing_enabled;
+	bool mnt_sign_enabled = global_secflags & CIFSSEC_MAY_SIGN;
+
+	/*
+	 * Is signing required by mnt options? If not then check
+	 * global_secflags to see if it is there.
+	 */
+	if (!mnt_sign_required)
+		mnt_sign_required = ((global_secflags & CIFSSEC_MUST_SIGN) ==
+						CIFSSEC_MUST_SIGN);
+
+	/*
+	 * If signing is required then it's automatically enabled too,
+	 * otherwise, check to see if the secflags allow it.
+	 */
+	mnt_sign_enabled = mnt_sign_required ? mnt_sign_required :
+				(global_secflags & CIFSSEC_MAY_SIGN);
+
+	/* If server requires signing, does client allow it? */
+	if (srv_sign_required) {
+		if (!mnt_sign_enabled) {
+			cifs_dbg(VFS, "Server requires signing, but it's disabled in SecurityFlags!");
+			return -ENOTSUPP;
+		}
+		server->sign = true;
+	}
+
+	/* If client requires signing, does server allow it? */
+	if (mnt_sign_required) {
+		if (!srv_sign_enabled) {
+			cifs_dbg(VFS, "Server does not support signing!");
+			return -ENOTSUPP;
+		}
+		server->sign = true;
+	}
+
+	return 0;
 }
 
 static void clean_demultiplex_info(struct TCP_Server_Info *server)
@@ -1155,15 +1194,23 @@ cifs_parse_smb_version(char *value, struct smb_vol *vol)
 	substring_t args[MAX_OPT_ARGS];
 
 	switch (match_token(value, cifs_smb_version_tokens, args)) {
+#ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
 	case Smb_1:
 		vol->ops = &smb1_operations;
 		vol->vals = &smb1_values;
 		break;
-#ifdef CONFIG_CIFS_SMB2
 	case Smb_20:
 		vol->ops = &smb20_operations;
 		vol->vals = &smb20_values;
 		break;
+#else
+	case Smb_1:
+		cifs_dbg(VFS, "vers=1.0 (cifs) mount not permitted when legacy dialects disabled\n");
+		return 1;
+	case Smb_20:
+		cifs_dbg(VFS, "vers=2.0 mount not permitted when legacy dialects disabled\n");
+		return 1;
+#endif /* CIFS_ALLOW_INSECURE_LEGACY */
 	case Smb_21:
 		vol->ops = &smb21_operations;
 		vol->vals = &smb21_values;
@@ -1182,7 +1229,6 @@ cifs_parse_smb_version(char *value, struct smb_vol *vol)
 		vol->vals = &smb311_values;
 		break;
 #endif /* SMB311 */
-#endif
 	default:
 		cifs_dbg(VFS, "Unknown vers= option specified: %s\n", value);
 		return 1;
@@ -1313,9 +1359,15 @@ cifs_parse_mount_options(const char *mountdata, const char *devname,
 
 	vol->actimeo = CIFS_DEF_ACTIMEO;
 
+#ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
 	/* FIXME: add autonegotiation -- for now, SMB1 is default */
 	vol->ops = &smb1_operations;
 	vol->vals = &smb1_values;
+#else
+	/* When legacy SMB1 is disabled, default to SMB 2.0 */
+	vol->ops = &smb21_operations;
+	vol->vals = &smb21_values;
+#endif
 
 	vol->echo_interval = SMB_ECHO_INTERVAL_DEFAULT;
 
@@ -2195,7 +2247,6 @@ cifs_put_tcp_session(struct TCP_Server_Info *server, int from_reconnect)
 
 	cancel_delayed_work_sync(&server->echo);
 
-#ifdef CONFIG_CIFS_SMB2
 	if (from_reconnect)
 		/*
 		 * Avoid deadlock here: reconnect work calls
@@ -2206,7 +2257,6 @@ cifs_put_tcp_session(struct TCP_Server_Info *server, int from_reconnect)
 		cancel_delayed_work(&server->reconnect);
 	else
 		cancel_delayed_work_sync(&server->reconnect);
-#endif
 
 	spin_lock(&GlobalMid_Lock);
 	server->tcpStatus = CifsExiting;
@@ -2272,17 +2322,13 @@ cifs_get_tcp_session(struct smb_vol *volume_info)
 	INIT_LIST_HEAD(&tcp_ses->tcp_ses_list);
 	INIT_LIST_HEAD(&tcp_ses->smb_ses_list);
 	INIT_DELAYED_WORK(&tcp_ses->echo, cifs_echo_request);
-#ifdef CONFIG_CIFS_SMB2
 	INIT_DELAYED_WORK(&tcp_ses->reconnect, smb2_reconnect_server);
 	mutex_init(&tcp_ses->reconnect_mutex);
-#endif
 	memcpy(&tcp_ses->srcaddr, &volume_info->srcaddr,
 	       sizeof(tcp_ses->srcaddr));
 	memcpy(&tcp_ses->dstaddr, &volume_info->dstaddr,
 		sizeof(tcp_ses->dstaddr));
-#ifdef CONFIG_CIFS_SMB2
 	generate_random_uuid(tcp_ses->client_guid);
-#endif
 	/*
 	 * at this point we are the only ones with the pointer
 	 * to the struct since the kernel thread not created yet
@@ -2785,7 +2831,6 @@ cifs_get_tcon(struct cifs_ses *ses, struct smb_vol *volume_info)
 			     "SMB3 or later required for persistent handles\n");
 			rc = -EOPNOTSUPP;
 			goto out_fail;
-#ifdef CONFIG_CIFS_SMB2
 		} else if (ses->server->capabilities &
 			   SMB2_GLOBAL_CAP_PERSISTENT_HANDLES)
 			tcon->use_persistent = true;
@@ -2794,15 +2839,12 @@ cifs_get_tcon(struct cifs_ses *ses, struct smb_vol *volume_info)
 				"Persistent handles not supported on share\n");
 			rc = -EOPNOTSUPP;
 			goto out_fail;
-#endif /* CONFIG_CIFS_SMB2 */
 		}
-#ifdef CONFIG_CIFS_SMB2
 	} else if ((tcon->capabilities & SMB2_SHARE_CAP_CONTINUOUS_AVAILABILITY)
 	     && (ses->server->capabilities & SMB2_GLOBAL_CAP_PERSISTENT_HANDLES)
 	     && (volume_info->nopersistent == false)) {
 		cifs_dbg(FYI, "enabling persistent handles\n");
 		tcon->use_persistent = true;
-#endif /* CONFIG_CIFS_SMB2 */
 	} else if (volume_info->resilient) {
 		if (ses->server->vals->protocol_id == 0) {
 			cifs_dbg(VFS,
@@ -3257,6 +3299,7 @@ ip_connect(struct TCP_Server_Info *server)
 	return generic_ip_connect(server);
 }
 
+#ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
 void reset_cifs_unix_caps(unsigned int xid, struct cifs_tcon *tcon,
 			  struct cifs_sb_info *cifs_sb, struct smb_vol *vol_info)
 {
@@ -3356,6 +3399,7 @@ void reset_cifs_unix_caps(unsigned int xid, struct cifs_tcon *tcon,
 		}
 	}
 }
+#endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
 
 int cifs_setup_cifs_sb(struct smb_vol *pvolume_info,
 			struct cifs_sb_info *cifs_sb)
@@ -3729,14 +3773,12 @@ try_mount_again:
 		goto mount_fail_check;
 	}
 
-#ifdef CONFIG_CIFS_SMB2
 	if ((volume_info->persistent == true) && ((ses->server->capabilities &
 		SMB2_GLOBAL_CAP_PERSISTENT_HANDLES) == 0)) {
 		cifs_dbg(VFS, "persistent handles not supported by server\n");
 		rc = -EOPNOTSUPP;
 		goto mount_fail_check;
 	}
-#endif /* CONFIG_CIFS_SMB2*/
 
 	/* search for existing tcon to this server share */
 	tcon = cifs_get_tcon(ses, volume_info);
@@ -3746,6 +3788,7 @@ try_mount_again:
 		goto remote_path_check;
 	}
 
+#ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
 	/* tell server which Unix caps we support */
 	if (cap_unix(tcon->ses)) {
 		/* reset of caps checks mount to see if unix extensions
@@ -3758,6 +3801,7 @@ try_mount_again:
 			goto mount_fail_check;
 		}
 	} else
+#endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
 		tcon->unix_ext = 0; /* server does not support them */
 
 	/* do not care if a following call succeed - informational */
@@ -4213,8 +4257,10 @@ cifs_construct_tcon(struct cifs_sb_info *cifs_sb, kuid_t fsuid)
 		goto out;
 	}
 
+#ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
 	if (cap_unix(ses))
 		reset_cifs_unix_caps(0, tcon, NULL, vol_info);
+#endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
 out:
 	kfree(vol_info->username);
 	kzfree(vol_info->password);

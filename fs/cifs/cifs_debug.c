@@ -406,7 +406,7 @@ static const struct file_operations cifs_linux_ext_proc_fops;
 void
 cifs_proc_init(void)
 {
-	proc_fs_cifs = proc_mkdir("fs/cifs", NULL);
+	proc_fs_cifs = proc_mkdir("fs/cifs2", NULL);
 	if (proc_fs_cifs == NULL)
 		return;
 
@@ -440,7 +440,7 @@ cifs_proc_clean(void)
 	remove_proc_entry("SecurityFlags", proc_fs_cifs);
 	remove_proc_entry("LinuxExtensionsEnabled", proc_fs_cifs);
 	remove_proc_entry("LookupCacheEnabled", proc_fs_cifs);
-	remove_proc_entry("fs/cifs", NULL);
+	remove_proc_entry("fs/cifs2", NULL);
 }
 
 static int cifsFYI_proc_show(struct seq_file *m, void *v)

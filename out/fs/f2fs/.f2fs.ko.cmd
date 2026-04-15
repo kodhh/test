@@ -1,1 +1,1 @@
-cmd_fs/f2fs/f2fs.ko := aarch64-linux-android-ld -EL -fix-cortex-a53-843419 -r  -T ../scripts/module-common.lds -T ../arch/arm64/kernel/module.lds --build-id  -o fs/f2fs/f2fs.ko fs/f2fs/f2fs.o fs/f2fs/f2fs.mod.o ;  true
+cmd_fs/f2fs/f2fs.ko := aarch64-linux-gnu-ld -EL -fix-cortex-a53-843419 -r  -T ../scripts/module-common.lds -T ../arch/arm64/kernel/module.lds --build-id  -o fs/f2fs/f2fs.ko fs/f2fs/f2fs.o fs/f2fs/f2fs.mod.o ;  true

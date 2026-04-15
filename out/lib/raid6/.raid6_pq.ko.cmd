@@ -1,1 +1,1 @@
-cmd_lib/raid6/raid6_pq.ko := aarch64-linux-android-ld -EL -fix-cortex-a53-843419 -r  -T ../scripts/module-common.lds -T ../arch/arm64/kernel/module.lds --build-id  -o lib/raid6/raid6_pq.ko lib/raid6/raid6_pq.o lib/raid6/raid6_pq.mod.o ;  true
+cmd_lib/raid6/raid6_pq.ko := aarch64-linux-gnu-ld -EL -fix-cortex-a53-843419 -r  -T ../scripts/module-common.lds -T ../arch/arm64/kernel/module.lds --build-id  -o lib/raid6/raid6_pq.ko lib/raid6/raid6_pq.o lib/raid6/raid6_pq.mod.o ;  true

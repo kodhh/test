@@ -50,9 +50,7 @@
 #include <linux/key-type.h>
 #include "cifs_spnego.h"
 #include "fscache.h"
-#ifdef CONFIG_CIFS_SMB2
 #include "smb2pdu.h"
-#endif
 
 int cifsFYI = 0;
 bool traceSMB;
@@ -271,9 +269,8 @@ cifs_alloc_inode(struct super_block *sb)
 	cifs_inode->uniqueid = 0;
 	cifs_inode->createtime = 0;
 	cifs_inode->epoch = 0;
-#ifdef CONFIG_CIFS_SMB2
 	generate_random_uuid(cifs_inode->lease_key);
-#endif
+
 	/*
 	 * Can not set i_flags here - they get immediately overwritten to zero
 	 * by the VFS.
@@ -882,9 +879,9 @@ cifs_setlease(struct file *file, long arg, struct file_lock **lease, void **priv
 		return -EAGAIN;
 }
 
-struct file_system_type cifs_fs_type = {
+struct file_system_type cifs2_fs_type = {
 	.owner = THIS_MODULE,
-	.name = "cifs",
+	.name = "cifs2",
 	.mount = cifs_do_mount,
 	.kill_sb = cifs_kill_sb,
 	/*  .fs_flags */
@@ -1124,14 +1121,12 @@ cifs_destroy_inodecache(void)
 static int
 cifs_init_request_bufs(void)
 {
-	size_t max_hdr_size = MAX_CIFS_HDR_SIZE;
-#ifdef CONFIG_CIFS_SMB2
 	/*
 	 * SMB2 maximum header size is bigger than CIFS one - no problems to
 	 * allocate some more bytes for CIFS.
 	 */
-	max_hdr_size = MAX_SMB2_HDR_SIZE;
-#endif
+	size_t max_hdr_size = MAX_SMB2_HDR_SIZE;
+
 	if (CIFSMaxBufSize < 8192) {
 	/* Buffer size can not be smaller than 2 * PATH_MAX since maximum
 	Unicode path name has to fit in any SMB/CIFS path based frames */
@@ -1238,7 +1233,7 @@ cifs_destroy_mids(void)
 }
 
 static int __init
-init_cifs(void)
+init_cifs2(void)
 {
 	int rc = 0;
 	cifs_proc_init();
@@ -1322,7 +1317,7 @@ init_cifs(void)
 		goto out_register_key_type;
 #endif /* CONFIG_CIFS_ACL */
 
-	rc = register_filesystem(&cifs_fs_type);
+	rc = register_filesystem(&cifs2_fs_type);
 	if (rc)
 		goto out_init_cifs_idmap;
 
@@ -1354,10 +1349,10 @@ out_clean_proc:
 }
 
 static void __exit
-exit_cifs(void)
+exit_cifs2(void)
 {
 	cifs_dbg(NOISY, "exit_cifs\n");
-	unregister_filesystem(&cifs_fs_type);
+	unregister_filesystem(&cifs2_fs_type);
 	cifs_dfs_release_automount_timer();
 #ifdef CONFIG_CIFS_ACL
 	exit_cifs_idmap();
@@ -1380,5 +1375,5 @@ MODULE_DESCRIPTION
     ("VFS to access servers complying with the SNIA CIFS Specification "
      "e.g. Samba and Windows");
 MODULE_VERSION(CIFS_VERSION);
-module_init(init_cifs)
-module_exit(exit_cifs)
+module_init(init_cifs2)
+module_exit(exit_cifs2)

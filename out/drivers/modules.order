@@ -9,6 +9,4 @@ kernel/drivers/usb/storage/uas.ko
 kernel/drivers/usb/storage/uas.ko
 kernel/drivers/usb/storage/uas.ko
 kernel/drivers/staging/rtl8188eu/r8188eu.ko
-kernel/drivers/staging/rtl8188fu/rtl8188fu.ko
-kernel/drivers/staging/rtl8821CU/8821cu.ko
 kernel/drivers/mtk_misc/devnode/devnode.ko

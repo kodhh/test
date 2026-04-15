@@ -1,4 +1,4 @@
--:  ../include/linux/kconfig.h include/generated/autoconf.h \
+-: ../include/linux/kconfig.h include/generated/autoconf.h \
  arch/arm64/include/generated/asm/types.h \
  ../include/uapi/asm-generic/types.h ../include/asm-generic/int-ll64.h \
  ../include/uapi/asm-generic/int-ll64.h \

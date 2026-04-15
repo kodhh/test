@@ -148,6 +148,7 @@ __attribute__((section("__versions"))) = {
 	{ 0x88db9f48, __VMLINUX_SYMBOL_STR(__check_object_size) },
 	{ 0x760a0f4f, __VMLINUX_SYMBOL_STR(yield) },
 	{ 0x2a28f0f5, __VMLINUX_SYMBOL_STR(usb_alloc_urb) },
+	{ 0xe914e41e, __VMLINUX_SYMBOL_STR(strcpy) },
 	{ 0x5c7fe3d9, __VMLINUX_SYMBOL_STR(alloc_etherdev_mqs) },
 };
 
