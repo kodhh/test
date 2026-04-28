@@ -2690,7 +2690,7 @@ cifs_write_allocate_pages(struct page **pages, unsigned long num_pages)
 	unsigned long i;
 
 	for (i = 0; i < num_pages; i++) {
-		pages[i] = alloc_page(GFP_KERNEL|__GFP_HIGHMEM);
+		pages[i] = alloc_page(GFP_KERNEL| GFP_HIGHUSER_MOVABLE);
 		if (!pages[i]) {
 			/*
 			 * save number of pages we have already allocated and
@@ -3110,7 +3110,7 @@ cifs_read_allocate_pages(struct cifs_readdata *rdata, unsigned int nr_pages)
 	unsigned int i;
 
 	for (i = 0; i < nr_pages; i++) {
-		page = alloc_page(GFP_KERNEL|__GFP_HIGHMEM);
+		page = alloc_page(GFP_KERNEL| GFP_HIGHUSER_MOVABLE);
 		if (!page) {
 			rc = -ENOMEM;
 			break;
@@ -4191,88 +4191,6 @@ cifs_direct_io(struct kiocb *iocb, struct iov_iter *iter)
         return -EINVAL;
 }
 
-#ifdef CONFIG_MP_CMA_PATCH_MIGRATION_FILTER
-
-#include <linux/mm.h>
-#include <linux/pfn.h>
-
-/*
- * CMA 区域定义 - 根据 /proc/cmdline 中的 CMA0~CMA5 硬编码
- * 格式: { .start = 起始地址, .end = 结束地址 }
- */
-static const struct {
-    phys_addr_t start;
-    phys_addr_t end;
-} cma_regions[] = {
-    /* CMA0: MIU0_CMA_OTHERS */
-    { .start = 0x07800000, .end = 0x0BFFFFFF },
-    /* CMA1: XC_MAIN_FRAME_BUF */
-    { .start = 0x0C000000, .end = 0x107FFFFF },
-    /* CMA2: VIDEO_ENCODER */
-    { .start = 0x10800000, .end = 0x11FFFFFF },
-    /* CMA3: VDEC_FRAME_BUF_STR_MBOOT */
-    { .start = 0x12000000, .end = 0x29BFFFFF },
-    /* CMA4: GPU_DIP_MEM */
-    { .start = 0x72800000, .end = 0x783FFFFF },
-    /* CMA5: GOP_MALI_BUF */
-    { .start = 0x78400000, .end = 0x7FFFFFFF },
-};
-
-/**
- * cifs_is_cma_page - 检查页面是否位于 CMA 区域内
- * @page: 要检查的页面
- *
- * 通过页面的物理地址判断是否属于 cmdline 中定义的 CMA 区域。
- * 返回: true 如果是 CMA 页面, false 否则
- */
-static bool cifs_is_cma_page(struct page *page)
-{
-    phys_addr_t paddr;
-    int i;
-
-    if (!page)
-        return false;
-
-    /* 获取页面的物理地址 */
-    paddr = page_to_phys(page);
-
-    /* 遍历所有 CMA 区域，检查物理地址是否在范围内 */
-    for (i = 0; i < ARRAY_SIZE(cma_regions); i++) {
-        if (paddr >= cma_regions[i].start && paddr <= cma_regions[i].end)
-            return true;
-    }
-
-    return false;
-}
-
-/**
- * cifs_migrate_page - CIFS 页面迁移函数（带 CMA 检查）
- */
-static int cifs_migrate_page(struct address_space *mapping,
-                             struct page *newpage, struct page *page,
-                             enum migrate_mode mode)
-{
-    /*
-     * 拒绝迁移到 CMA 区域内的页面
-     * 这可以防止将非 CMA 页面的数据复制到 CMA 区域内
-     */
-    if (cifs_is_cma_page(newpage))
-        return -EBUSY;
-
-    /* 拒绝迁移正在回写的页面 */
-    if (PageWriteback(page))
-        return -EBUSY;
-
-    /* 异步模式下拒绝迁移脏页 */
-    if (PageDirty(page) && mode != MIGRATE_SYNC)
-        return -EBUSY;
-
-    /* 使用通用迁移函数 */
-    return migrate_page(mapping, newpage, page, mode);
-}
-
-#endif /* CONFIG_MP_CMA_PATCH_MIGRATION_FILTER */
-
 const struct address_space_operations cifs_addr_ops = {
 	.readpage = cifs_readpage,
 	.readpages = cifs_readpages,
@@ -4286,7 +4204,7 @@ const struct address_space_operations cifs_addr_ops = {
 	.invalidatepage = cifs_invalidate_page,
 	.launder_page = cifs_launder_page,
 #ifdef CONFIG_MP_CMA_PATCH_MIGRATION_FILTER
-    .migratepage = cifs_migrate_page,
+    .migratepage = ext4_jnl_migrate_page,
 #endif
 };
 
@@ -4306,6 +4224,6 @@ const struct address_space_operations cifs_addr_ops_smallbuf = {
 	.invalidatepage = cifs_invalidate_page,
 	.launder_page = cifs_launder_page,
 #ifdef CONFIG_MP_CMA_PATCH_MIGRATION_FILTER
-    .migratepage = cifs_migrate_page,
+    .migratepage = ext4_jnl_migrate_page,
 #endif
 };

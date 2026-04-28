@@ -38,7 +38,7 @@ static void cifs_set_ops(struct inode *inode)
 {
 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
 #ifdef CONFIG_MP_CMA_PATCH_MIGRATION_FILTER
-	mapping_set_gfp_mask(&(inode->i_data), GFP_HIGHUSER_MOVABLE);
+		mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER_MOVABLE);
 #endif
 
 	switch (inode->i_mode & S_IFMT) {

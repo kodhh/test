@@ -1785,7 +1785,7 @@ enum REPARSE_SIGN ni_parse_reparse(struct ntfs_inode *ni, struct ATTRIB *attr,
 		/*
 		 * WOF - Windows Overlay Filter - used to compress files with lzx/xpress
 		 * Unlike native NTFS file compression, the Windows Overlay Filter supports
-		 * only read operations. This means that it doesn’t need to sector-align each
+		 * only read operations. This means that it doesnÂ’t need to sector-align each
 		 * compressed chunk, so the compressed data can be packed more tightly together.
 		 * If you open the file for writing, the Windows Overlay Filter just decompresses
 		 * the entire file, turning it back into a plain file.
@@ -2568,7 +2568,7 @@ int ni_read_frame(struct ntfs_inode *ni, u64 frame_vbo, struct page **pages,
 	}
 
 	for (i = 0; i < npages_disk; i++) {
-		pg = alloc_page(GFP_KERNEL);
+		pg = alloc_page(GFP_KERNEL | GFP_HIGHUSER_MOVABLE);
 		if (!pg) {
 			err = -ENOMEM;
 			goto out3;
@@ -2713,7 +2713,7 @@ int ni_write_frame(struct ntfs_inode *ni, struct page **pages,
 	}
 
 	for (i = 0; i < pages_per_frame; i++) {
-		pg = alloc_page(GFP_KERNEL);
+		pg = alloc_page(GFP_KERNEL | GFP_HIGHUSER_MOVABLE);
 		if (!pg) {
 			err = -ENOMEM;
 			goto out1;
