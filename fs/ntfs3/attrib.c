@@ -1268,7 +1268,7 @@ int attr_wof_frame_info(struct ntfs_inode *ni, struct ATTRIB *attr,
 	down_write(&ni->file.run_lock);
 	page = ni->file.offs_page;
 	if (!page) {
-		page = alloc_page(GFP_KERNEL);
+		page = alloc_page(GFP_KERNEL|GFP_HIGHUSER_MOVABLE);
 		if (!page) {
 			err = -ENOMEM;
 			goto out;
