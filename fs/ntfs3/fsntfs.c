@@ -1614,7 +1614,7 @@ int ntfs_bio_fill_1(struct ntfs_sb_info *sbi, const struct runs_tree *run)
 	void *kaddr;
 	struct blk_plug plug;
 
-	fill = alloc_page(GFP_KERNELGFP_HIGHUSER_MOVABLE);
+	fill = alloc_page(GFP_KERNEL|GFP_HIGHUSER_MOVABLE);
 	if (!fill)
 		return -ENOMEM;
 
