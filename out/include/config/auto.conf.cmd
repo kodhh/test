@@ -41,6 +41,7 @@ deps_config := \
 	drivers/vhost/Kconfig \
 	virt/kvm/Kconfig \
 	arch/arm64/kvm/Kconfig \
+	fs/ksmbd/Kconfig \
 	fs/dlm/Kconfig \
 	fs/nls/Kconfig \
 	fs/9p/Kconfig \
@@ -233,6 +234,8 @@ deps_config := \
 	drivers/platform/mips/Kconfig \
 	drivers/platform/x86/Kconfig \
 	drivers/platform/Kconfig \
+	drivers/staging/rtl8821CU/Kconfig \
+	drivers/staging/rtl8188fu/Kconfig \
 	drivers/staging/amazon/Kconfig \
 	drivers/staging/vc04_services/Kconfig \
 	drivers/staging/greybus/Kconfig \

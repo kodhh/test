@@ -1,5 +1,7 @@
 kernel/fs/exfat/exfat.ko
 kernel/fs/cifs/cifs2.ko
 kernel/fs/ntfs3/ntfs3.ko
+kernel/fs/overlayfs/overlay.ko
 kernel/fs/btrfs/btrfs.ko
 kernel/fs/f2fs/f2fs.ko
+kernel/fs/ksmbd/ksmbd.ko

@@ -1,0 +1,1 @@
+cmd_crypto/lz4/lz4.o := aarch64-linux-gnu-ld -EL -fix-cortex-a53-843419   -r -o crypto/lz4/lz4.o crypto/lz4/lz4_main.o crypto/lz4/lz4_compress.o crypto/lz4/lz4hc_compress.o crypto/lz4/lz4_decompress.o crypto/lz4/lz4armv8/lz4accel.o crypto/lz4/lz4armv8/lz4armv8.o 

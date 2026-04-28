@@ -1,3 +1,4 @@
 kernel/crypto/crc32_generic.ko
 kernel/crypto/lz4.ko
+kernel/crypto/lz4/lz4.ko
 kernel/crypto/xor.ko

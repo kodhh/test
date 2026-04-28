@@ -1,29 +1,18 @@
-cmd_drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.o := aarch64-linux-android-gcc -Wp,-MD,drivers/staging/rtl8188fu/hal/phydm/.phydm_hwconfig.o.d -nostdinc -isystem /mnt/aarch64-linux-android-4.9/bin/../lib/gcc/aarch64-linux-android/4.9.x/include -I../arch/arm64/include -I./arch/arm64/include/generated/uapi -I./arch/arm64/include/generated  -I../include -I./include -I../arch/arm64/include/uapi -I../include/uapi -I./include/generated/uapi -include ../include/linux/kconfig.h -I../drivers/staging/rtl8188fu -Idrivers/staging/rtl8188fu -D__KERNEL__  -I../arch/arm64/include  -I../drivers/mstar2 -mlittle-endian -Wl,-fix-cortex-a53-843419 -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fshort-wchar -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -std=gnu89 -fno-peephole2 -fno-PIE -mgeneral-regs-only -DCONFIG_AS_LSE=1 -fno-asynchronous-unwind-tables -fno-pic -fno-delete-null-pointer-checks -O2 --param=allow-store-data-races=0 -DCC_HAVE_ASM_GOTO -Wframe-larger-than=1536 -fstack-protector-strong -Wno-unused-but-set-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -fno-var-tracking-assignments -g -femit-struct-debug-baseonly -fno-var-tracking -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fno-merge-all-constants -fmerge-constants -fno-stack-check -fconserve-stack -Werror=implicit-int -Werror=strict-prototypes -Werror=date-time -O1 -Wno-unused-variable -Wno-unused-value -Wno-unused-label -Wno-unused-parameter -Wno-unused-function -Wno-unused  -I../drivers/staging/rtl8188fu/include  -I../drivers/staging/rtl8188fu/hal/phydm -DCONFIG_RTL8188F -DCONFIG_MP_INCLUDED -DCONFIG_POWER_SAVING -DCONFIG_TRAFFIC_PROTECT -DCONFIG_LOAD_PHY_PARA_FROM_FILE -DREALTEK_CONFIG_PATH=\"\" -DCONFIG_CALIBRATE_TX_POWER_TO_MAX -DCONFIG_RTW_ADAPTIVITY_EN=0 -DCONFIG_RTW_ADAPTIVITY_MODE=0 -DWAKEUP_GPIO_IDX= -DCONFIG_BR_EXT '-DCONFIG_BR_EXT_BRNAME="'br0'"' -DDM_ODM_SUPPORT_TYPE=0x04 -DCONFIG_LITTLE_ENDIAN -DCONFIG_IOCTL_CFG80211 -DRTW_USE_CFG80211_STA_EVENT  -DMODULE -mcmodel=large  -DKBUILD_BASENAME='"phydm_hwconfig"'  -DKBUILD_MODNAME='"rtl8188fu"' -c -o drivers/staging/rtl8188fu/hal/phydm/.tmp_phydm_hwconfig.o ../drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.c
+cmd_drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.o := aarch64-linux-gnu-gcc -Wp,-MD,drivers/staging/rtl8188fu/hal/phydm/.phydm_hwconfig.o.d -nostdinc -isystem /usr/lib/gcc-cross/aarch64-linux-gnu/13/include -I../arch/arm64/include -I./arch/arm64/include/generated/uapi -I./arch/arm64/include/generated  -I../include -I./include -I../arch/arm64/include/uapi -I../include/uapi -I./include/generated/uapi -include ../include/linux/kconfig.h -I../drivers/staging/rtl8188fu -Idrivers/staging/rtl8188fu -D__KERNEL__  -I../arch/arm64/include  -I../drivers/mstar2 -mlittle-endian -Wl,-fix-cortex-a53-843419 -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fshort-wchar -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -std=gnu89 -fno-peephole2 -fno-PIE -mgeneral-regs-only -DCONFIG_AS_LSE=1 -fno-asynchronous-unwind-tables -mpc-relative-literal-loads -fno-pic -fno-delete-null-pointer-checks -Wno-frame-address -Wno-format-truncation -Wno-format-overflow -Wno-int-in-bool-context -Wno-attribute-alias -O2 -DCC_HAVE_ASM_GOTO -Wframe-larger-than=1536 -fstack-protector-strong -Wno-unused-but-set-variable -Wno-unused-const-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -fno-var-tracking-assignments -g -femit-struct-debug-baseonly -fno-var-tracking -Wdeclaration-after-statement -Wno-pointer-sign -Wno-stringop-truncation -fno-strict-overflow -fno-merge-all-constants -fmerge-constants -fno-stack-check -fconserve-stack -Werror=implicit-int -Werror=strict-prototypes -Werror=date-time -Werror=incompatible-pointer-types -Wno-packed-not-aligned -O1 -Wno-unused-variable -Wno-unused-value -Wno-unused-label -Wno-unused-parameter -Wno-unused-function -Wno-unused  -I../drivers/staging/rtl8188fu/include  -I../drivers/staging/rtl8188fu/hal/phydm -DCONFIG_RTL8188F -DCONFIG_POWER_SAVING -DCONFIG_TRAFFIC_PROTECT -DWAKEUP_GPIO_IDX= -DDM_ODM_SUPPORT_TYPE=0x04 -DCONFIG_LITTLE_ENDIAN -DCONFIG_IOCTL_CFG80211 -DRTW_USE_CFG80211_STA_EVENT  -DMODULE -mcmodel=large  -DKBUILD_BASENAME='"phydm_hwconfig"'  -DKBUILD_MODNAME='"rtl8188fu"' -c -o drivers/staging/rtl8188fu/hal/phydm/.tmp_phydm_hwconfig.o ../drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.c
 
 source_drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.o := ../drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.c
 
 deps_drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.o := \
     $(wildcard include/config/mp.h) \
-    $(wildcard include/config/tc.h) \
-    $(wildcard include/config/signal/scale/mapping.h) \
-    $(wildcard include/config/phydm/antenna/diversity.h) \
     $(wildcard include/config/s0s1/sw/antenna/diversity.h) \
-    $(wildcard include/config/path/diversity.h) \
     $(wildcard include/config/rf/radio.h) \
     $(wildcard include/config/rf/txpwr/lmt.h) \
     $(wildcard include/config/bb/phy/reg.h) \
     $(wildcard include/config/bb/agc/tab.h) \
     $(wildcard include/config/bb/phy/reg/pg.h) \
-    $(wildcard include/config/bb/phy/reg/mp.h) \
-    $(wildcard include/config/bb/agc/tab/diff.h) \
   ../drivers/staging/rtl8188fu/hal/phydm/mp_precomp.h \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm_precomp.h \
-    $(wildcard include/config/sfw/supported.h) \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm_types.h \
-    $(wildcard include/config/pci/hci.h) \
-    $(wildcard include/config/usb/hci.h) \
-    $(wildcard include/config/sdio/hci.h) \
-    $(wildcard include/config/gspi/hci.h) \
     $(wildcard include/config/little/endian.h) \
     $(wildcard include/config/big/endian.h) \
   ../drivers/staging/rtl8188fu/include/drv_types.h \
@@ -33,60 +22,34 @@ deps_drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.o := \
     $(wildcard include/config/intel/widi.h) \
     $(wildcard include/config/beamforming.h) \
     $(wildcard include/config/prealloc/rx/skb/buffer.h) \
-    $(wildcard include/config/tdls.h) \
     $(wildcard include/config/wapi/support.h) \
     $(wildcard include/config/drvext.h) \
-    $(wildcard include/config/mp/included.h) \
     $(wildcard include/config/br/ext.h) \
     $(wildcard include/config/iol.h) \
-    $(wildcard include/config/bt/coexist.h) \
     $(wildcard include/config/1t1r.h) \
     $(wildcard include/config/2t2r.h) \
-    $(wildcard include/config/rtw/customer/str.h) \
-    $(wildcard include/config/tx/early/mode.h) \
     $(wildcard include/config/adaptor/info/caching/file.h) \
-    $(wildcard include/config/layer2/roaming.h) \
     $(wildcard include/config/80211d.h) \
     $(wildcard include/config/special/setting/for/funai/tv.h) \
-    $(wildcard include/config/ieee80211/band/5ghz.h) \
-    $(wildcard include/config/load/phy/para/from/file.h) \
     $(wildcard include/config/multi/vir/ifaces.h) \
     $(wildcard include/config/auto/chnl/sel/nhm.h) \
-    $(wildcard include/config/concurrent/mode.h) \
     $(wildcard include/config/dbg/counter.h) \
     $(wildcard include/config/dfs/master.h) \
     $(wildcard include/config/sdio/indirect/access.h) \
     $(wildcard include/config/ioctl/cfg80211.h) \
+    $(wildcard include/config/usb/hci.h) \
     $(wildcard include/config/usb/vendor/req/mutex.h) \
     $(wildcard include/config/usb/vendor/req/buffer/prealloc.h) \
     $(wildcard include/config/intel/proxim.h) \
-    $(wildcard include/config/mac/loopback/driver.h) \
     $(wildcard include/config/ieee80211w.h) \
     $(wildcard include/config/ap/mode.h) \
-    $(wildcard include/config/p2p.h) \
-    $(wildcard include/config/wfd.h) \
-    $(wildcard include/config/bt/coexist/socket/trx.h) \
     $(wildcard include/config/gpio/api.h) \
     $(wildcard include/config/autosuspend.h) \
     $(wildcard include/config/pno/support.h) \
     $(wildcard include/config/pno/set/debug.h) \
   ../drivers/staging/rtl8188fu/include/drv_conf.h \
-    $(wildcard include/config/android.h) \
-    $(wildcard include/config/platform/android.h) \
-    $(wildcard include/config/validate/ssid.h) \
-    $(wildcard include/config/signal/display/dbm.h) \
-    $(wildcard include/config/has/earlysuspend.h) \
-    $(wildcard include/config/resume/in/workqueue.h) \
-    $(wildcard include/config/android/power.h) \
-    $(wildcard include/config/wakelock.h) \
     $(wildcard include/config/vendor/req/retry.h) \
     $(wildcard include/config/rtw/hiq/filter.h) \
-    $(wildcard include/config/rtw/adaptivity/en.h) \
-    $(wildcard include/config/rtw/adaptivity/mode.h) \
-    $(wildcard include/config/rtw/adaptivity/dml.h) \
-    $(wildcard include/config/rtw/adaptivity/dc/backoff.h) \
-    $(wildcard include/config/rtw/adaptivity/th/l2h/ini.h) \
-    $(wildcard include/config/rtw/adaptivity/th/edcca/hl/diff.h) \
     $(wildcard include/config/rtw/target/tx/pwr/2g/a.h) \
     $(wildcard include/config/rtw/target/tx/pwr/2g/b.h) \
     $(wildcard include/config/rtw/target/tx/pwr/2g/c.h) \
@@ -100,10 +63,6 @@ deps_drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.o := \
     $(wildcard include/config/rtw/rfe/type.h) \
     $(wildcard include/config/rtw/glna/type.h) \
     $(wildcard include/config/rtw/pll/ref/clk/sel.h) \
-    $(wildcard include/config/rtl8812a.h) \
-    $(wildcard include/config/rtl8821a.h) \
-    $(wildcard include/config/rtl8814a.h) \
-    $(wildcard include/config/calibrate/tx/power/by/regulatory.h) \
     $(wildcard include/config/deauth/before/connect.h) \
     $(wildcard include/config/wext/dont/join/byssid.h) \
     $(wildcard include/config/doscan/in/busytraffic.h) \
@@ -117,38 +76,15 @@ deps_drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.o := \
     $(wildcard include/config/nativeap/mlme.h) \
     $(wildcard include/config/hostapd/mlme.h) \
     $(wildcard include/config/find/best/channel.h) \
-    $(wildcard include/config/tx/mcast2uni.h) \
-    $(wildcard include/config/auto/ap/mode.h) \
-    $(wildcard include/config/p2p/remove/group/info.h) \
-    $(wildcard include/config/dbg/p2p.h) \
-    $(wildcard include/config/p2p/ps.h) \
-    $(wildcard include/config/p2p/op/chk/social/ch.h) \
-    $(wildcard include/config/cfg80211/onechannel/under/concurrent.h) \
-    $(wildcard include/config/p2p/chk/invite/ch/list.h) \
-    $(wildcard include/config/p2p/invite/iot.h) \
-    $(wildcard include/config/tdls/driver/setup.h) \
-    $(wildcard include/config/tdls/autosetup.h) \
-    $(wildcard include/config/tdls/autocheckalive.h) \
-    $(wildcard include/config/tdls/ch/sw.h) \
-    $(wildcard include/config/tsf/reset/offload.h) \
-    $(wildcard include/config/hwport/swap.h) \
-    $(wildcard include/config/runtime/port/switch.h) \
-    $(wildcard include/config/scan/backop.h) \
-    $(wildcard include/config/layer2/roaming/resume.h) \
-    $(wildcard include/config/antenna/diversity.h) \
     $(wildcard include/config/led.h) \
     $(wildcard include/config/sw/led.h) \
     $(wildcard include/config/led/handled/by/cmd/thread.h) \
-    $(wildcard include/config/xmit/ack.h) \
-    $(wildcard include/config/active/keep/alive/check.h) \
     $(wildcard include/config/c2h/packet/en.h) \
     $(wildcard include/config/rf/power/trim.h) \
     $(wildcard include/config/usb/tx/aggregation.h) \
     $(wildcard include/config/usb/rx/aggregation.h) \
     $(wildcard include/config/global/ui/pid.h) \
     $(wildcard include/config/out/ep/wifi/mode.h) \
-    $(wildcard include/config/support/usb/int.h) \
-    $(wildcard include/config/usb/interrupt/in/pipe.h) \
     $(wildcard include/config/reduce/usb/tx/int.h) \
     $(wildcard include/config/use/usb/buffer/alloc/xx.h) \
     $(wildcard include/config/use/usb/buffer/alloc/tx.h) \
@@ -158,39 +94,24 @@ deps_drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.o := \
     $(wildcard include/config/skb/copy.h) \
     $(wildcard include/config/easy/replacement.h) \
     $(wildcard include/config/new/signal/stat/process.h) \
-    $(wildcard include/config/background/noise/monitor.h) \
+    $(wildcard include/config/signal/display/dbm.h) \
     $(wildcard include/config/check/ac/lifetime.h) \
-    $(wildcard include/config/embedded/fwimg.h) \
-    $(wildcard include/config/file/fwimg.h) \
-    $(wildcard include/config/long/delay/issue.h) \
     $(wildcard include/config/attempt/to/fix/ap/beacon/error.h) \
     $(wildcard include/config/minimal/memory/usage.h) \
-    $(wildcard include/config/mp/iwpriv/support.h) \
     $(wildcard include/config/power/saving.h) \
     $(wildcard include/config/ips.h) \
     $(wildcard include/config/lps.h) \
     $(wildcard include/config/ips/level/2.h) \
     $(wildcard include/config/lps/lclk.h) \
     $(wildcard include/config/xmit/thread/mode.h) \
-    $(wildcard include/config/gpio/wakeup.h) \
     $(wildcard include/config/interrupt/based/txbcn.h) \
     $(wildcard include/config/interrupt/based/txbcn/early/int.h) \
     $(wildcard include/config/interrupt/based/txbcn/bcn/ok/err.h) \
     $(wildcard include/config/prealloc/recv/skb.h) \
     $(wildcard include/config/fix/nr/bulkin/buffer.h) \
     $(wildcard include/config/debug.h) \
-    $(wildcard include/config/debug/rtl871x.h) \
-    $(wildcard include/config/proc/debug.h) \
-    $(wildcard include/config/error/detect.h) \
-    $(wildcard include/config/error/detect/int.h) \
-    $(wildcard include/config/error/reset.h) \
   ../drivers/staging/rtl8188fu/include/hal_ic_cfg.h \
     $(wildcard include/config/multidrv.h) \
-    $(wildcard include/config/rtl8188e.h) \
-    $(wildcard include/config/rtl8192e.h) \
-    $(wildcard include/config/rtl8723b.h) \
-    $(wildcard include/config/rtl8703b.h) \
-    $(wildcard include/config/rtl8822b.h) \
   ../drivers/staging/rtl8188fu/include/basic_types.h \
   include/generated/uapi/linux/version.h \
   ../include/linux/types.h \
@@ -259,7 +180,7 @@ deps_drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.o := \
     $(wildcard include/config/prove/locking.h) \
     $(wildcard include/config/mstar/chip.h) \
     $(wildcard include/config/panic/timeout.h) \
-  /mnt/aarch64-linux-android-4.9/lib/gcc/aarch64-linux-android/4.9.x/include/stdarg.h \
+  /usr/lib/gcc-cross/aarch64-linux-gnu/13/include/stdarg.h \
   ../include/linux/linkage.h \
   ../include/linux/stringify.h \
   ../include/linux/export.h \
@@ -1161,13 +1082,13 @@ deps_drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.o := \
   ../include/linux/ns_common.h \
   ../include/uapi/linux/utsname.h \
   ../drivers/staging/rtl8188fu/include/osdep_service.h \
-    $(wildcard include/config/use/vmalloc.h) \
   ../drivers/staging/rtl8188fu/include/osdep_service_linux.h \
     $(wildcard include/config/net/radio.h) \
     $(wildcard include/config/wireless/ext.h) \
     $(wildcard include/config/tcp/csum/offload/tx.h) \
-    $(wildcard include/config/efuse/config/file.h) \
+    $(wildcard include/config/has/earlysuspend.h) \
     $(wildcard include/config/usb/suspend.h) \
+    $(wildcard include/config/wakelock.h) \
   ../include/linux/slab.h \
     $(wildcard include/config/debug/slab.h) \
     $(wildcard include/config/failslab.h) \
@@ -1615,7 +1536,6 @@ deps_drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.o := \
   ../drivers/staging/rtl8188fu/include/byteorder/little_endian.h \
   ../drivers/staging/rtl8188fu/include/wlan_bssdef.h \
   ../drivers/staging/rtl8188fu/include/wifi.h \
-    $(wildcard include/config/rtl8712fw.h) \
     $(wildcard include/config/error.h) \
     $(wildcard include/config/method/flash.h) \
     $(wildcard include/config/method/ethernet.h) \
@@ -1631,10 +1551,9 @@ deps_drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.o := \
     $(wildcard include/config/method/vdisplay.h) \
     $(wildcard include/config/method/pdisplay.h) \
   ../drivers/staging/rtl8188fu/include/ieee80211.h \
-    $(wildcard include/config/rtl8711fw.h) \
   ../drivers/staging/rtl8188fu/include/drv_types_linux.h \
   ../drivers/staging/rtl8188fu/include/rtw_debug.h \
-    $(wildcard include/config/p2p/wowlan.h) \
+    $(wildcard include/config/debug/rtl871x.h) \
   ../drivers/staging/rtl8188fu/include/rtw_rf.h \
     $(wildcard include/config/1t.h) \
     $(wildcard include/config/2t.h) \
@@ -1642,6 +1561,7 @@ deps_drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.o := \
     $(wildcard include/config/2r.h) \
     $(wildcard include/config/1t2r.h) \
     $(wildcard include/config/turbo.h) \
+    $(wildcard include/config/ieee80211/band/5ghz.h) \
   ../drivers/staging/rtl8188fu/include/rtw_ht.h \
   ../drivers/staging/rtl8188fu/include/rtw_cmd.h \
     $(wildcard include/config/event/thread/mode.h) \
@@ -1651,7 +1571,6 @@ deps_drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.o := \
   ../drivers/staging/rtl8188fu/include/rtw_security.h \
     $(wildcard include/config/gtk/ol.h) \
   ../drivers/staging/rtl8188fu/include/rtw_xmit.h \
-    $(wildcard include/config/tx/aggregation.h) \
     $(wildcard include/config/platform/arm/sunxi.h) \
     $(wildcard include/config/platform/arm/sun6i.h) \
     $(wildcard include/config/platform/arm/sun7i.h) \
@@ -1659,21 +1578,21 @@ deps_drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.o := \
     $(wildcard include/config/platform/arm/sun50iw1p1.h) \
     $(wildcard include/config/platform/mstar.h) \
     $(wildcard include/config/single/xmit/buf.h) \
-    $(wildcard include/config/sdio/tx/tasklet.h) \
+    $(wildcard include/config/rtl8812a.h) \
+    $(wildcard include/config/xmit/ack.h) \
   ../drivers/staging/rtl8188fu/include/xmit_osdep.h \
+    $(wildcard include/config/gspi/hci.h) \
   ../drivers/staging/rtl8188fu/include/rtw_recv.h \
     $(wildcard include/config/single/recv/buf.h) \
     $(wildcard include/config/tcp/csum/offload/rx.h) \
     $(wildcard include/config/recv/thread/mode.h) \
     $(wildcard include/config/rx/indicate/queue.h) \
     $(wildcard include/config/bsd/rx/use/mbuf.h) \
+    $(wildcard include/config/signal/scale/mapping.h) \
   ../drivers/staging/rtl8188fu/include/recv_osdep.h \
   ../drivers/staging/rtl8188fu/include/rtw_efuse.h \
-  ../drivers/staging/rtl8188fu/include/rtw_sreset.h \
   ../drivers/staging/rtl8188fu/include/hal_intf.h \
-    $(wildcard include/config/lps/lclk/wd/timer.h) \
   ../drivers/staging/rtl8188fu/include/hal_com.h \
-    $(wildcard include/config/fw/c2h/debug.h) \
   ../drivers/staging/rtl8188fu/include/HalVerDef.h \
   ../drivers/staging/rtl8188fu/include/hal_pg.h \
   ../drivers/staging/rtl8188fu/include/hal_phy.h \
@@ -1697,26 +1616,21 @@ deps_drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.o := \
   ../drivers/staging/rtl8188fu/include/rtw_ioctl.h \
   ../drivers/staging/rtl8188fu/include/rtw_ioctl_set.h \
   ../drivers/staging/rtl8188fu/include/rtw_ioctl_query.h \
-  ../drivers/staging/rtl8188fu/include/rtw_ioctl_rtl.h \
   ../drivers/staging/rtl8188fu/include/osdep_intf.h \
     $(wildcard include/config/r871x/test.h) \
-  ../drivers/staging/rtl8188fu/include/../os_dep/linux/rtw_proc.h \
-  ../include/linux/proc_fs.h \
-    $(wildcard include/config/proc/uid.h) \
   ../drivers/staging/rtl8188fu/include/../os_dep/linux/ioctl_cfg80211.h \
   ../drivers/staging/rtl8188fu/include/rtw_eeprom.h \
   ../drivers/staging/rtl8188fu/include/sta_info.h \
     $(wildcard include/config/atmel/rc/patch.h) \
   ../drivers/staging/rtl8188fu/include/rtw_event.h \
   ../drivers/staging/rtl8188fu/include/rtw_mlme_ext.h \
+    $(wildcard include/config/active/keep/alive/check.h) \
   ../drivers/staging/rtl8188fu/include/rtw_ap.h \
   ../drivers/staging/rtl8188fu/include/rtw_version.h \
   ../drivers/staging/rtl8188fu/include/rtw_odm.h \
   ../drivers/staging/rtl8188fu/include/../hal/phydm/phydm_types.h \
   ../drivers/staging/rtl8188fu/include/rtw_p2p.h \
-  ../drivers/staging/rtl8188fu/include/rtw_mp.h \
-    $(wildcard include/config/txt.h) \
-  ../drivers/staging/rtl8188fu/include/rtw_br_ext.h \
+    $(wildcard include/config/dbg/p2p.h) \
   ../drivers/staging/rtl8188fu/include/ip.h \
   ../drivers/staging/rtl8188fu/include/if_ether.h \
   ../drivers/staging/rtl8188fu/include/ethernet.h \
@@ -1724,82 +1638,45 @@ deps_drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.o := \
   ../drivers/staging/rtl8188fu/include/usb_osintf.h \
   ../drivers/staging/rtl8188fu/include/usb_vendor_req.h \
   ../drivers/staging/rtl8188fu/include/usb_ops.h \
-    $(wildcard include/config/rtl8814.h) \
   ../drivers/staging/rtl8188fu/include/usb_ops_linux.h \
   ../drivers/staging/rtl8188fu/include/usb_hal.h \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm_features.h \
-    $(wildcard include/config/hl/smart/antenna/type1.h) \
-    $(wildcard include/config/ra/dynamic/rty/limit.h) \
-    $(wildcard include/config/ant/detection.h) \
-    $(wildcard include/config/ra/dynamic/rate/id.h) \
-    $(wildcard include/config/rtl/8881a/ant/switch.h) \
-    $(wildcard include/config/slot/0/ant/switch.h) \
-    $(wildcard include/config/slot/1/ant/switch.h) \
-    $(wildcard include/config/no/2g/diversity.h) \
-    $(wildcard include/config/2g5g/cg/trx/diversity/8881a.h) \
-    $(wildcard include/config/2g/cgcs/rx/diversity.h) \
-    $(wildcard include/config/2g/cg/trx/diversity.h) \
-    $(wildcard include/config/2g/cg/smart/ant/diversity.h) \
-    $(wildcard include/config/no/5g/diversity/8881a.h) \
-    $(wildcard include/config/no/5g/diversity.h) \
-    $(wildcard include/config/5g/cgcs/rx/diversity/8881a.h) \
-    $(wildcard include/config/5g/cgcs/rx/diversity.h) \
-    $(wildcard include/config/5g/cg/trx/diversity/8881a.h) \
-    $(wildcard include/config/5g/cg/trx/diversity.h) \
-    $(wildcard include/config/2g5g/cg/trx/diversity.h) \
-    $(wildcard include/config/5g/cg/smart/ant/diversity.h) \
-    $(wildcard include/config/not/support/antdiv.h) \
-    $(wildcard include/config/2g/support/antdiv.h) \
-    $(wildcard include/config/5g/support/antdiv.h) \
-    $(wildcard include/config/2g5g/support/antdiv.h) \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm.h \
     $(wildcard include/config/bb/rf.h) \
     $(wildcard include/config/phy/reg/pg/value/type.h) \
     $(wildcard include/config/bb/agc/tab/2g.h) \
     $(wildcard include/config/bb/agc/tab/5g.h) \
+    $(wildcard include/config/bb/phy/reg/mp.h) \
+    $(wildcard include/config/bb/agc/tab/diff.h) \
     $(wildcard include/config/fw/nic.h) \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm_pre_define.h \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm_dig.h \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm_edcaturbocheck.h \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm_pathdiv.h \
-  ../drivers/staging/rtl8188fu/hal/phydm/phydm_antdiv.h \
-  ../drivers/staging/rtl8188fu/hal/phydm/phydm_antdect.h \
-  ../drivers/staging/rtl8188fu/hal/phydm/phydm_dynamicbbpowersaving.h \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm_rainfo.h \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm_dynamictxpower.h \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm_cfotracking.h \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm_acs.h \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm_adaptivity.h \
-  ../drivers/staging/rtl8188fu/hal/phydm/phydm_beamforming.h \
-  ../drivers/staging/rtl8188fu/hal/phydm/txbf/halcomtxbf.h \
-  ../drivers/staging/rtl8188fu/hal/phydm/txbf/haltxbfjaguar.h \
-  ../drivers/staging/rtl8188fu/hal/phydm/txbf/haltxbf8192e.h \
-  ../drivers/staging/rtl8188fu/hal/phydm/txbf/haltxbf8814a.h \
-  ../drivers/staging/rtl8188fu/hal/phydm/txbf/haltxbf8821b.h \
-  ../drivers/staging/rtl8188fu/hal/phydm/txbf/haltxbf8822b.h \
-  ../drivers/staging/rtl8188fu/hal/phydm/txbf/haltxbfinterface.h \
-  ../drivers/staging/rtl8188fu/hal/phydm/phydm_noisemonitor.h \
   ../drivers/staging/rtl8188fu/hal/phydm/halphyrf_ce.h \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm_powertracking_ce.h \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm_hwconfig.h \
+    $(wildcard include/config/tc.h) \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm_debug.h \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm_regdefine11ac.h \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm_regdefine11n.h \
     $(wildcard include/config/anta/11n.h) \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm_interface.h \
   ../drivers/staging/rtl8188fu/hal/phydm/phydm_reg.h \
-    $(wildcard include/config/wlan/hal/8814ae.h) \
   ../drivers/staging/rtl8188fu/hal/phydm/rtl8188f/halhwimg8188f_mac.h \
   ../drivers/staging/rtl8188fu/hal/phydm/rtl8188f/halhwimg8188f_rf.h \
   ../drivers/staging/rtl8188fu/hal/phydm/rtl8188f/halhwimg8188f_bb.h \
-  ../drivers/staging/rtl8188fu/hal/phydm/rtl8188f/halhwimg8188f_fw.h \
   ../drivers/staging/rtl8188fu/hal/phydm/rtl8188f/hal8188freg.h \
   ../drivers/staging/rtl8188fu/hal/phydm/rtl8188f/phydm_rtl8188f.h \
   ../drivers/staging/rtl8188fu/hal/phydm/rtl8188f/phydm_regconfig8188f.h \
     $(wildcard include/config/h/8188f.h) \
   ../drivers/staging/rtl8188fu/hal/phydm/rtl8188f/halphyrf_8188f.h \
   ../drivers/staging/rtl8188fu/include/rtl8188f_hal.h \
-    $(wildcard include/config/check/bt/hang.h) \
   ../drivers/staging/rtl8188fu/include/hal_data.h \
     $(wildcard include/config/single/img.h) \
   ../drivers/staging/rtl8188fu/include/../hal/phydm/phydm_precomp.h \

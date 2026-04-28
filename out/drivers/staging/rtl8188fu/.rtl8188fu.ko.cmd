@@ -1,1 +1,0 @@
-cmd_drivers/staging/rtl8188fu/rtl8188fu.ko := aarch64-linux-android-ld -EL -fix-cortex-a53-843419 -r  -T ../scripts/module-common.lds -T ../arch/arm64/kernel/module.lds --build-id  -o drivers/staging/rtl8188fu/rtl8188fu.ko drivers/staging/rtl8188fu/rtl8188fu.o drivers/staging/rtl8188fu/rtl8188fu.mod.o ;  true

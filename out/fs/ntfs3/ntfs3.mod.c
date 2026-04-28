@@ -46,7 +46,6 @@ __attribute__((section("__versions"))) = {
 	{ 0x8ab60ef7, __VMLINUX_SYMBOL_STR(filemap_write_and_wait_range) },
 	{ 0xfb482c4f, __VMLINUX_SYMBOL_STR(__generic_file_write_iter) },
 	{ 0x8d6cdf7a, __VMLINUX_SYMBOL_STR(iget5_locked) },
-	{ 0x54ecb4da, __VMLINUX_SYMBOL_STR(migrate_page) },
 	{ 0x815b5dd4, __VMLINUX_SYMBOL_STR(match_octal) },
 	{ 0xb8b043f2, __VMLINUX_SYMBOL_STR(kfree_link) },
 	{ 0xa0225ee3, __VMLINUX_SYMBOL_STR(posix_acl_to_xattr) },

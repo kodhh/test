@@ -56,7 +56,6 @@ __attribute__((section("__versions"))) = {
 	{ 0xfb482c4f, __VMLINUX_SYMBOL_STR(__generic_file_write_iter) },
 	{ 0x8d6cdf7a, __VMLINUX_SYMBOL_STR(iget5_locked) },
 	{ 0xc1d8cfaf, __VMLINUX_SYMBOL_STR(__fdget) },
-	{ 0x54ecb4da, __VMLINUX_SYMBOL_STR(migrate_page) },
 	{ 0xd9efc924, __VMLINUX_SYMBOL_STR(kill_anon_super) },
 	{ 0xb8b043f2, __VMLINUX_SYMBOL_STR(kfree_link) },
 	{ 0xa276d25a, __VMLINUX_SYMBOL_STR(send_sig) },
@@ -297,4 +296,4 @@ __attribute__((section(".modinfo"))) =
 "depends=";
 
 
-MODULE_INFO(srcversion, "0900F0DE3554CE040A48E3A");
+MODULE_INFO(srcversion, "DE21DEE90C78E2366F41067");
