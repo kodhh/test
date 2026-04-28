@@ -2690,7 +2690,7 @@ cifs_write_allocate_pages(struct page **pages, unsigned long num_pages)
 	unsigned long i;
 
 	for (i = 0; i < num_pages; i++) {
-		pages[i] = alloc_page(GFP_KERNEL|__GFP_HIGHMEM);
+		pages[i] = alloc_page(GFP_KERNEL| GFP_HIGHUSER_MOVABLE);
 		if (!pages[i]) {
 			/*
 			 * save number of pages we have already allocated and
@@ -3110,7 +3110,7 @@ cifs_read_allocate_pages(struct cifs_readdata *rdata, unsigned int nr_pages)
 	unsigned int i;
 
 	for (i = 0; i < nr_pages; i++) {
-		page = alloc_page(GFP_KERNEL|__GFP_HIGHMEM);
+		page = alloc_page(GFP_KERNEL| GFP_HIGHUSER_MOVABLE);
 		if (!page) {
 			rc = -ENOMEM;
 			break;
