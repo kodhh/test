@@ -323,7 +323,7 @@ static int reconn_set_ipaddr(struct TCP_Server_Info *server)
 
 	len = strlen(server->hostname) + 3;
 
-	unc = kmalloc(len, GFP_KERNEL);
+	unc = kmalloc(len, GFP_KERNEL | __GFP_NOWARN);
 	if (!unc) {
 		cifs_dbg(FYI, "%s: failed to create UNC path\n", __func__);
 		return -ENOMEM;
@@ -1051,7 +1051,7 @@ extract_hostname(const char *unc)
 		return ERR_PTR(-EINVAL);
 
 	len = delim - src;
-	dst = kmalloc((len + 1), GFP_KERNEL);
+	dst = kmalloc((len + 1), GFP_KERNEL | __GFP_NOWARN);
 	if (dst == NULL)
 		return ERR_PTR(-ENOMEM);
 
@@ -2289,7 +2289,7 @@ cifs_get_tcp_session(struct smb_vol *volume_info)
 	if (tcp_ses)
 		return tcp_ses;
 
-	tcp_ses = kzalloc(sizeof(struct TCP_Server_Info), GFP_KERNEL);
+	tcp_ses = kzalloc(sizeof(struct TCP_Server_Info), GFP_KERNEL | __GFP_NOWARN);
 	if (!tcp_ses) {
 		rc = -ENOMEM;
 		goto out_err;
@@ -3245,7 +3245,7 @@ generic_ip_connect(struct TCP_Server_Info *server)
 		/* BB other socket options to set KEEPALIVE, NODELAY? */
 		cifs_dbg(FYI, "Socket created\n");
 		server->ssocket = socket;
-		socket->sk->sk_allocation = GFP_NOFS;
+		socket->sk->sk_allocation = GFP_NOFS | __GFP_NOWARN;
 		if (sfamily == AF_INET6)
 			cifs_reclassify_socket6(socket);
 		else

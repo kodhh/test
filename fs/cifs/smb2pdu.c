@@ -859,7 +859,7 @@ SMB2_sess_auth_rawntlmssp_negotiate(struct SMB2_sess_data *sess_data)
 	 * If memory allocation is successful, caller of this function
 	 * frees it.
 	 */
-	ses->ntlmssp = kmalloc(sizeof(struct ntlmssp_auth), GFP_KERNEL);
+	ses->ntlmssp = kmalloc(sizeof(struct ntlmssp_auth), GFP_KERNEL | __GFP_NOWARN);
 	if (!ses->ntlmssp) {
 		rc = -ENOMEM;
 		goto out_err;
@@ -1129,7 +1129,7 @@ SMB2_tcon(const unsigned int xid, struct cifs_ses *ses, const char *tree,
 		return -EOPNOTSUPP;
 	}
 
-	unc_path = kmalloc(MAX_SHARENAME_LENGTH * 2, GFP_KERNEL);
+	unc_path = kmalloc(MAX_SHARENAME_LENGTH * 2, GFP_KERNEL | __GFP_NOWARN);
 	if (unc_path == NULL)
 		return -ENOMEM;
 

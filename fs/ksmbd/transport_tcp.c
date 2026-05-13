@@ -121,7 +121,7 @@ static struct tcp_transport *alloc_transport(struct socket *client_sk)
 	struct tcp_transport *t;
 	struct ksmbd_conn *conn;
 
-	t = kzalloc(sizeof(*t), GFP_KERNEL);
+	t = kzalloc(sizeof(*t), GFP_KERNEL | __GFP_NOWARN);
 	if (!t)
 		return NULL;
 	t->sock = client_sk;

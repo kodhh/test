@@ -2568,7 +2568,7 @@ int ni_read_frame(struct ntfs_inode *ni, u64 frame_vbo, struct page **pages,
 	}
 
 	for (i = 0; i < npages_disk; i++) {
-		pg = alloc_page(GFP_KERNEL | GFP_HIGHUSER_MOVABLE);
+		pg = alloc_page(GFP_KERNEL | GFP_HIGHUSER_MOVABLE | __GFP_NORETRY);
 		if (!pg) {
 			err = -ENOMEM;
 			goto out3;
@@ -2713,7 +2713,7 @@ int ni_write_frame(struct ntfs_inode *ni, struct page **pages,
 	}
 
 	for (i = 0; i < pages_per_frame; i++) {
-		pg = alloc_page(GFP_KERNEL | GFP_HIGHUSER_MOVABLE);
+		pg = alloc_page(GFP_KERNEL | GFP_HIGHUSER_MOVABLE | __GFP_NORETRY);
 		if (!pg) {
 			err = -ENOMEM;
 			goto out1;

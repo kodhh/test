@@ -2803,7 +2803,7 @@ static int submit_extent_page(int op, int op_flags, struct extent_io_tree *tree,
 	}
 
 	bio = btrfs_bio_alloc(bdev, sector, BIO_MAX_PAGES,
-			GFP_NOFS | __GFP_HIGH);
+			GFP_NOFS | __GFP_HIGH | __GFP_NOWARN);
 	if (!bio)
 		return -ENOMEM;
 

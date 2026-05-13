@@ -33,7 +33,6 @@
 #include <linux/mount.h>
 #include <linux/slab.h>
 #include <linux/swap.h>
-#include <linux/migrate.h>
 #include <asm/div64.h>
 #include "cifsfs.h"
 #include "cifspdu.h"
@@ -4203,9 +4202,6 @@ const struct address_space_operations cifs_addr_ops = {
 	.direct_IO = cifs_direct_io,
 	.invalidatepage = cifs_invalidate_page,
 	.launder_page = cifs_launder_page,
-#ifdef CONFIG_MP_CMA_PATCH_MIGRATION_FILTER
-    .migratepage = ext4_jnl_migrate_page,
-#endif
 };
 
 /*
@@ -4223,7 +4219,4 @@ const struct address_space_operations cifs_addr_ops_smallbuf = {
 	.releasepage = cifs_release_page,
 	.invalidatepage = cifs_invalidate_page,
 	.launder_page = cifs_launder_page,
-#ifdef CONFIG_MP_CMA_PATCH_MIGRATION_FILTER
-    .migratepage = ext4_jnl_migrate_page,
-#endif
 };

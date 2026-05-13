@@ -818,7 +818,7 @@ static int exfat_init_sb_info(struct super_block *sb)
 {
 	struct exfat_sb_info *sbi;
 
-	sbi = kzalloc(sizeof(struct exfat_sb_info), GFP_KERNEL);
+	sbi = kzalloc(sizeof(struct exfat_sb_info), GFP_KERNEL | __GFP_NOWARN);
 	if (!sbi)
 		return -ENOMEM;
 

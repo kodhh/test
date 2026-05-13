@@ -234,6 +234,8 @@ static void __handle_ksmbd_work(struct ksmbd_work *work,
 		return;
 
 send:
+	if (work->sess)
+		put_session(work->sess);
 	smb3_preauth_hash_rsp(work);
 	if (work->sess && work->sess->enc && work->encrypted &&
 	    conn->ops->encrypt_resp) {
@@ -396,7 +398,7 @@ static int __queue_ctrl_work(int type)
 {
 	struct server_ctrl_struct *ctrl;
 
-	ctrl = kmalloc(sizeof(struct server_ctrl_struct), GFP_KERNEL);
+	ctrl = kmalloc(sizeof(struct server_ctrl_struct), GFP_KERNEL | __GFP_NOWARN);
 	if (!ctrl)
 		return -ENOMEM;
 

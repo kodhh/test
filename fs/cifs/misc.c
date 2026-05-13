@@ -73,7 +73,7 @@ sesInfoAlloc(void)
 {
 	struct cifs_ses *ret_buf;
 
-	ret_buf = kzalloc(sizeof(struct cifs_ses), GFP_KERNEL);
+	ret_buf = kzalloc(sizeof(struct cifs_ses), GFP_KERNEL | __GFP_NOWARN);
 	if (ret_buf) {
 		atomic_inc(&sesInfoAllocCount);
 		ret_buf->status = CifsNew;
@@ -108,7 +108,7 @@ struct cifs_tcon *
 tconInfoAlloc(void)
 {
 	struct cifs_tcon *ret_buf;
-	ret_buf = kzalloc(sizeof(struct cifs_tcon), GFP_KERNEL);
+	ret_buf = kzalloc(sizeof(struct cifs_tcon), GFP_KERNEL | __GFP_NOWARN);
 	if (ret_buf) {
 		atomic_inc(&tconInfoAllocCount);
 		ret_buf->tidStatus = CifsNew;

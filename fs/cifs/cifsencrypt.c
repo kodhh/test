@@ -54,7 +54,7 @@ cifs_crypto_shash_md5_allocate(struct TCP_Server_Info *server)
 
 	size = sizeof(struct shash_desc) +
 			crypto_shash_descsize(server->secmech.md5);
-	server->secmech.sdescmd5 = kmalloc(size, GFP_KERNEL);
+	server->secmech.sdescmd5 = kmalloc(size, GFP_KERNEL | __GFP_NOWARN);
 	if (!server->secmech.sdescmd5) {
 		crypto_free_shash(server->secmech.md5);
 		server->secmech.md5 = NULL;

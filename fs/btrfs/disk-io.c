@@ -311,7 +311,7 @@ static int csum_tree_block(struct btrfs_fs_info *fs_info,
 		offset += cur_len;
 	}
 	if (csum_size > sizeof(inline_result)) {
-		result = kzalloc(csum_size, GFP_NOFS);
+		result = kzalloc(csum_size, GFP_NOFS | __GFP_NOWARN);
 		if (!result)
 			return -ENOMEM;
 	} else {
@@ -2504,7 +2504,7 @@ int open_ctree(struct super_block *sb,
 		goto fail_bio_counter;
 	}
 
-	mapping_set_gfp_mask(fs_info->btree_inode->i_mapping, GFP_NOFS);
+	mapping_set_gfp_mask(fs_info->btree_inode->i_mapping, GFP_NOFS | __GFP_MOVABLE);
 
 	INIT_RADIX_TREE(&fs_info->fs_roots_radix, GFP_ATOMIC);
 	INIT_RADIX_TREE(&fs_info->buffer_radix, GFP_ATOMIC);

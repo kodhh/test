@@ -38,7 +38,7 @@ int	rtw_hal_init_recv_priv(struct adapter *padapter)
 	_rtw_init_queue(&precvpriv->free_recv_buf_queue);
 
 	precvpriv->pallocated_recv_buf =
-		kcalloc(NR_RECVBUFF, sizeof(struct recv_buf), GFP_KERNEL);
+		kcalloc(NR_RECVBUFF, sizeof(struct recv_buf), GFP_KERNEL | __GFP_NOWARN);
 	if (!precvpriv->pallocated_recv_buf) {
 		res = _FAIL;
 		RT_TRACE(_module_rtl871x_recv_c_, _drv_err_,
@@ -69,9 +69,9 @@ int	rtw_hal_init_recv_priv(struct adapter *padapter)
 		skb_queue_head_init(&precvpriv->free_recv_skb_queue);
 
 		for (i = 0; i < NR_PREALLOC_RECV_SKB; i++) {
-			pskb = __netdev_alloc_skb(padapter->pnetdev,
-					MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ,
-					GFP_KERNEL);
+		pskb = __netdev_alloc_skb(padapter->pnetdev,
+				MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ,
+				GFP_KERNEL | __GFP_NOWARN);
 			if (pskb) {
 				kmemleak_not_leak(pskb);
 				pskb->dev = padapter->pnetdev;

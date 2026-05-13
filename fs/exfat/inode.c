@@ -12,7 +12,6 @@
 #include <linux/writeback.h>
 #include <linux/uio.h>
 #include <linux/random.h>
-#include <linux/migrate.h>
 
 #include "exfat_fs.h"
 
@@ -506,9 +505,6 @@ static const struct address_space_operations exfat_aops = {
 	.write_end	= exfat_write_end,
 	.direct_IO	= exfat_direct_IO,
 	.bmap		= exfat_aop_bmap,
-#ifdef CONFIG_MP_CMA_PATCH_MIGRATION_FILTER
-	.migratepage        = ext4_jnl_migrate_page,
-#endif
 };
 
 static struct exfat_inode_info *exfat_inode_tree_find(struct super_block *sb,

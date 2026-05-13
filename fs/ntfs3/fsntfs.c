@@ -1482,11 +1482,11 @@ int ntfs_write_bh(struct ntfs_sb_info *sbi, struct NTFS_RECORD_HEADER *rhdr,
 
 static inline struct bio *ntfs_alloc_bio(u32 nr_vecs)
 {
-	struct bio *bio = bio_alloc(GFP_NOFS | __GFP_HIGH, nr_vecs);
+	struct bio *bio = bio_alloc(GFP_NOFS | __GFP_HIGH | __GFP_NOWARN, nr_vecs);
 
 	if (!bio && (current->flags & PF_MEMALLOC)) {
 		while (!bio && (nr_vecs /= 2))
-			bio = bio_alloc(GFP_NOFS | __GFP_HIGH, nr_vecs);
+			bio = bio_alloc(GFP_NOFS | __GFP_HIGH | __GFP_NOWARN, nr_vecs);
 	}
 	return bio;
 }
@@ -1614,7 +1614,7 @@ int ntfs_bio_fill_1(struct ntfs_sb_info *sbi, const struct runs_tree *run)
 	void *kaddr;
 	struct blk_plug plug;
 
-	fill = alloc_page(GFP_KERNEL|GFP_HIGHUSER_MOVABLE);
+	fill = alloc_page(GFP_KERNEL|GFP_HIGHUSER_MOVABLE|__GFP_NORETRY);
 	if (!fill)
 		return -ENOMEM;
 

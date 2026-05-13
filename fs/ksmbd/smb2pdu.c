@@ -606,8 +606,10 @@ int smb2_check_user_session(struct ksmbd_work *work)
 	sess_id = le64_to_cpu(req_hdr->SessionId);
 	/* Check for validity of user session */
 	work->sess = ksmbd_session_lookup(conn, sess_id);
-	if (work->sess)
+	if (work->sess) {
+		get_session(work->sess);
 		return 1;
+	}
 	ksmbd_debug(SMB, "Invalid user session, Uid %llu\n", sess_id);
 	return -EINVAL;
 }
@@ -1164,7 +1166,7 @@ static int alloc_preauth_hash(struct ksmbd_session *sess,
 	if (sess->Preauth_HashValue)
 		return 0;
 
-	sess->Preauth_HashValue = kmalloc(PREAUTH_HASHVALUE_SIZE, GFP_KERNEL);
+	sess->Preauth_HashValue = kmalloc(PREAUTH_HASHVALUE_SIZE, GFP_KERNEL | __GFP_NOWARN);
 	if (!sess->Preauth_HashValue)
 		return -ENOMEM;
 
@@ -1587,6 +1589,7 @@ int smb2_sess_setup(struct ksmbd_work *work)
 		}
 	}
 	work->sess = sess;
+	get_session(sess);
 
 	if (sess->state == SMB2_SESSION_EXPIRED)
 		sess->state = SMB2_SESSION_IN_PROGRESS;
@@ -1900,9 +1903,6 @@ int smb2_session_logoff(struct ksmbd_work *work)
 
 	ksmbd_destroy_file_table(&sess->file_table);
 	sess->state = SMB2_SESSION_EXPIRED;
-
-	ksmbd_free_user(sess->user);
-	sess->user = NULL;
 
 	/* let start_tcp_sess free connection info now */
 	ksmbd_conn_set_need_negotiate(work);
@@ -4250,6 +4250,8 @@ static int smb2_get_ea(struct ksmbd_work *work, struct ksmbd_file *fp,
 		/* align next xattr entry at 4 byte bundary */
 		alignment_bytes = ((next_offset + 3) & ~3) - next_offset;
 		if (alignment_bytes) {
+			if (buf_free_len < alignment_bytes)
+				break;
 			memset(ptr, '\0', alignment_bytes);
 			ptr += alignment_bytes;
 			next_offset += alignment_bytes;

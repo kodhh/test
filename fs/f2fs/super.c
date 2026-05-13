@@ -2508,7 +2508,7 @@ static int read_raw_super_block(struct f2fs_sb_info *sbi,
 	struct f2fs_super_block *super;
 	int err = 0;
 
-	super = kzalloc(sizeof(struct f2fs_super_block), GFP_KERNEL);
+	super = kzalloc(sizeof(struct f2fs_super_block), GFP_KERNEL | __GFP_NOWARN);
 	if (!super)
 		return -ENOMEM;
 
@@ -2712,7 +2712,7 @@ try_onemore:
 	recovery = 0;
 
 	/* allocate memory for f2fs-specific super block info */
-	sbi = kzalloc(sizeof(struct f2fs_sb_info), GFP_KERNEL);
+	sbi = kzalloc(sizeof(struct f2fs_sb_info), GFP_KERNEL | __GFP_NOWARN);
 	if (!sbi)
 		return -ENOMEM;
 

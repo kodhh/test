@@ -69,7 +69,7 @@ static int exfat_allocate_bitmap(struct super_block *sb,
 	sbi->map_sectors = ((need_map_size - 1) >>
 			(sb->s_blocksize_bits)) + 1;
 	sbi->vol_amap = kmalloc_array(sbi->map_sectors,
-				sizeof(struct buffer_head *), GFP_KERNEL);
+				sizeof(struct buffer_head *), GFP_KERNEL | __GFP_NOWARN);
 	if (!sbi->vol_amap)
 		return -ENOMEM;
 

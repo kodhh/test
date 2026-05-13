@@ -837,7 +837,7 @@ struct exfat_entry_set_cache *exfat_get_dentry_set(struct super_block *sb,
 	if (ret)
 		return NULL;
 
-	es = kzalloc(sizeof(*es), GFP_KERNEL);
+	es = kzalloc(sizeof(*es), GFP_KERNEL | __GFP_NOWARN);
 	if (!es)
 		return NULL;
 	es->sb = sb;

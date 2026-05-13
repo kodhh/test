@@ -14,7 +14,6 @@
 #include <linux/uio.h>
 #include <linux/version.h>
 #include <linux/writeback.h>
-#include <linux/migrate.h>
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 16, 0)
 #include <linux/iversion.h>
@@ -2079,9 +2078,6 @@ const struct address_space_operations ntfs_aops = {
 	.write_end = ntfs_write_end,
 	.direct_IO = ntfs_direct_IO,
 	.bmap = ntfs_bmap,
-#ifdef CONFIG_MP_CMA_PATCH_MIGRATION_FILTER
-	.migratepage        = ext4_jnl_migrate_page,
-#endif
 };
 
 const struct address_space_operations ntfs_aops_cmpr = {
@@ -2090,8 +2086,5 @@ const struct address_space_operations ntfs_aops_cmpr = {
 	.readahead = ntfs_readahead,
 #else
 	.readpages = ntfs_readpages,
-#endif
-#ifdef CONFIG_MP_CMA_PATCH_MIGRATION_FILTER
-	.migratepage        = ext4_jnl_migrate_page,
 #endif
 };

@@ -55,7 +55,7 @@ struct ksmbd_conn *ksmbd_conn_alloc(void)
 {
 	struct ksmbd_conn *conn;
 
-	conn = kzalloc(sizeof(struct ksmbd_conn), GFP_KERNEL);
+	conn = kzalloc(sizeof(struct ksmbd_conn), GFP_KERNEL | __GFP_NOWARN);
 	if (!conn)
 		return NULL;
 
