@@ -123,7 +123,7 @@ static int lzo_compress_pages(struct list_head *ws,
 	 * store the size of all chunks of compressed data in
 	 * the first 4 bytes
 	 */
-	out_page = alloc_page(GFP_NOFS | __GFP_HIGHMEM);
+	out_page = alloc_page(GFP_NOFS | __GFP_HIGHMEM | __GFP_MOVABLE);
 	if (out_page == NULL) {
 		ret = -ENOMEM;
 		goto out;
@@ -193,11 +193,11 @@ static int lzo_compress_pages(struct list_head *ws,
 					goto out;
 				}
 
-				out_page = alloc_page(GFP_NOFS | __GFP_HIGHMEM);
-				if (out_page == NULL) {
-					ret = -ENOMEM;
-					goto out;
-				}
+			out_page = alloc_page(GFP_NOFS | __GFP_HIGHMEM | __GFP_MOVABLE);
+			if (out_page == NULL) {
+				ret = -ENOMEM;
+				goto out;
+			}
 				cpage_out = kmap(out_page);
 				pages[nr_pages++] = out_page;
 

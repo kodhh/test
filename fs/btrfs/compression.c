@@ -635,7 +635,8 @@ int btrfs_submit_compressed_read(struct inode *inode, struct bio *bio,
 
 	for (pg_index = 0; pg_index < nr_pages; pg_index++) {
 		cb->compressed_pages[pg_index] = alloc_page(GFP_NOFS |
-							      __GFP_HIGHMEM);
+							      __GFP_HIGHMEM |
+							      __GFP_MOVABLE);
 		if (!cb->compressed_pages[pg_index]) {
 			faili = pg_index - 1;
 			ret = -ENOMEM;
@@ -763,6 +764,7 @@ static struct {
 static const struct btrfs_compress_op * const btrfs_compress_op[] = {
 	&btrfs_zlib_compress,
 	&btrfs_lzo_compress,
+	&btrfs_zstd_compress,
 };
 
 void __init btrfs_init_compress(void)
@@ -931,7 +933,7 @@ static void free_workspaces(void)
  * max_out tells us the max number of bytes that we're allowed to
  * stuff into pages
  */
-int btrfs_compress_pages(int type, struct address_space *mapping,
+int btrfs_compress_pages(unsigned int type_level, struct address_space *mapping,
 			 u64 start, unsigned long len,
 			 struct page **pages,
 			 unsigned long nr_dest_pages,
@@ -941,9 +943,15 @@ int btrfs_compress_pages(int type, struct address_space *mapping,
 			 unsigned long max_out)
 {
 	struct list_head *workspace;
+	int type = type_level & 0xF;
 	int ret;
 
 	workspace = find_workspace(type);
+	if (!workspace)
+		return -ENOMEM;
+
+	if (btrfs_compress_op[type - 1]->set_level)
+		btrfs_compress_op[type - 1]->set_level(workspace, type_level);
 
 	ret = btrfs_compress_op[type-1]->compress_pages(workspace, mapping,
 						      start, len, pages,
@@ -1133,4 +1141,25 @@ void btrfs_clear_biovec_end(struct bio_vec *bvec, int vcnt,
 		pg_index++;
 		pg_offset = 0;
 	}
+}
+
+unsigned int btrfs_compress_str2level(const char *str)
+{
+	unsigned int level = 0;
+
+	if (strncmp(str, "zlib", 4) == 0) {
+		if ('1' <= str[4] && str[4] <= '9')
+			level = str[4] - '0';
+	} else if (strncmp(str, "zstd", 4) == 0) {
+		char *endptr;
+		const char *level_str = str + 4;
+
+		if (*level_str != '\0') {
+			level = simple_strtoul(level_str, &endptr, 10);
+			if (*endptr != '\0' || level == 0 || level > 22)
+				level = 0;
+		}
+	}
+
+	return level;
 }

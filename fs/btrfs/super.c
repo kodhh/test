@@ -503,9 +503,13 @@ int btrfs_parse_options(struct btrfs_root *root, char *options,
 				btrfs_test_opt(info, FORCE_COMPRESS);
 			if (token == Opt_compress ||
 			    token == Opt_compress_force ||
-			    strcmp(args[0].from, "zlib") == 0) {
+			    strncmp(args[0].from, "zlib", 4) == 0) {
+				unsigned int level;
+
+				level = btrfs_compress_str2level(args[0].from);
 				compress_type = "zlib";
-				info->compress_type = BTRFS_COMPRESS_ZLIB;
+				info->compress_type = BTRFS_COMPRESS_ZLIB |
+						      (level << 4);
 				btrfs_set_opt(info->mount_opt, COMPRESS);
 				btrfs_clear_opt(info->mount_opt, NODATACOW);
 				btrfs_clear_opt(info->mount_opt, NODATASUM);
@@ -517,6 +521,17 @@ int btrfs_parse_options(struct btrfs_root *root, char *options,
 				btrfs_clear_opt(info->mount_opt, NODATACOW);
 				btrfs_clear_opt(info->mount_opt, NODATASUM);
 				btrfs_set_fs_incompat(info, COMPRESS_LZO);
+				no_compress = 0;
+			} else if (strncmp(args[0].from, "zstd", 4) == 0) {
+				unsigned int level;
+
+				level = btrfs_compress_str2level(args[0].from);
+				compress_type = "zstd";
+				info->compress_type = BTRFS_COMPRESS_ZSTD |
+						      (level << 4);
+				btrfs_set_opt(info->mount_opt, COMPRESS);
+				btrfs_clear_opt(info->mount_opt, NODATACOW);
+				btrfs_clear_opt(info->mount_opt, NODATASUM);
 				no_compress = 0;
 			} else if (strncmp(args[0].from, "no", 2) == 0) {
 				compress_type = "no";
@@ -1242,8 +1257,10 @@ static int btrfs_show_options(struct seq_file *seq, struct dentry *dentry)
 					     num_online_cpus() + 2, 8))
 		seq_printf(seq, ",thread_pool=%d", info->thread_pool_size);
 	if (btrfs_test_opt(info, COMPRESS)) {
-		if (info->compress_type == BTRFS_COMPRESS_ZLIB)
+		if ((info->compress_type & 0xF) == BTRFS_COMPRESS_ZLIB)
 			compress_type = "zlib";
+		else if ((info->compress_type & 0xF) == BTRFS_COMPRESS_ZSTD)
+			compress_type = "zstd";
 		else
 			compress_type = "lzo";
 		if (btrfs_test_opt(info, FORCE_COMPRESS))

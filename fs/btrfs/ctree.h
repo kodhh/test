@@ -759,7 +759,7 @@ struct btrfs_fs_info {
 	 * commit (like for some mount options).
 	 */
 	unsigned long pending_changes;
-	unsigned long compress_type:4;
+	unsigned long compress_type:8;
 	int commit_interval;
 	/*
 	 * It is a suggestive number, the read side is safe even it gets a

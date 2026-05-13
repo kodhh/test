@@ -1404,7 +1404,7 @@ leave_nomem:
 			/* for missing devices, dev->bdev is NULL */
 			page->mirror_num = mirror_index + 1;
 			sblock->page_count++;
-			page->page = alloc_page(GFP_NOFS);
+			page->page = alloc_page(GFP_NOFS | __GFP_MOVABLE);
 			if (!page->page)
 				goto leave_nomem;
 
@@ -2294,7 +2294,7 @@ leave_nomem:
 			spage->have_csum = 0;
 		}
 		sblock->page_count++;
-		spage->page = alloc_page(GFP_KERNEL);
+		spage->page = alloc_page(GFP_KERNEL | __GFP_MOVABLE);
 		if (!spage->page)
 			goto leave_nomem;
 		len -= l;
@@ -2599,7 +2599,7 @@ leave_nomem:
 			spage->have_csum = 0;
 		}
 		sblock->page_count++;
-		spage->page = alloc_page(GFP_KERNEL);
+		spage->page = alloc_page(GFP_KERNEL | __GFP_MOVABLE);
 		if (!spage->page)
 			goto leave_nomem;
 		len -= l;

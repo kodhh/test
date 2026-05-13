@@ -1627,7 +1627,7 @@ static int btrfsic_read_block(struct btrfsic_state *state,
 	block_ctx->datav = block_ctx->mem_to_free;
 	block_ctx->pagev = (struct page **)(block_ctx->datav + num_pages);
 	for (i = 0; i < num_pages; i++) {
-		block_ctx->pagev[i] = alloc_page(GFP_NOFS);
+		block_ctx->pagev[i] = alloc_page(GFP_NOFS | __GFP_MOVABLE);
 		if (!block_ctx->pagev[i])
 			return -1;
 	}

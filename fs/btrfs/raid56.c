@@ -1031,7 +1031,7 @@ static int alloc_rbio_pages(struct btrfs_raid_bio *rbio)
 	for (i = 0; i < rbio->nr_pages; i++) {
 		if (rbio->stripe_pages[i])
 			continue;
-		page = alloc_page(GFP_NOFS | __GFP_HIGHMEM);
+		page = alloc_page(GFP_NOFS | __GFP_HIGHMEM | __GFP_MOVABLE);
 		if (!page)
 			return -ENOMEM;
 		rbio->stripe_pages[i] = page;
@@ -1050,7 +1050,7 @@ static int alloc_rbio_parity_pages(struct btrfs_raid_bio *rbio)
 	for (; i < rbio->nr_pages; i++) {
 		if (rbio->stripe_pages[i])
 			continue;
-		page = alloc_page(GFP_NOFS | __GFP_HIGHMEM);
+		page = alloc_page(GFP_NOFS | __GFP_HIGHMEM | __GFP_MOVABLE);
 		if (!page)
 			return -ENOMEM;
 		rbio->stripe_pages[i] = page;
@@ -2288,7 +2288,7 @@ static int alloc_rbio_essential_pages(struct btrfs_raid_bio *rbio)
 			if (rbio->stripe_pages[index])
 				continue;
 
-			page = alloc_page(GFP_NOFS | __GFP_HIGHMEM);
+			page = alloc_page(GFP_NOFS | __GFP_HIGHMEM | __GFP_MOVABLE);
 			if (!page)
 				return -ENOMEM;
 			rbio->stripe_pages[index] = page;
@@ -2341,13 +2341,13 @@ static noinline void finish_parity_scrub(struct btrfs_raid_bio *rbio,
 	if (!need_check)
 		goto writeback;
 
-	p_page = alloc_page(GFP_NOFS | __GFP_HIGHMEM);
+	p_page = alloc_page(GFP_NOFS | __GFP_HIGHMEM | __GFP_MOVABLE);
 	if (!p_page)
 		goto cleanup;
 	SetPageUptodate(p_page);
 
 	if (q_stripe != -1) {
-		q_page = alloc_page(GFP_NOFS | __GFP_HIGHMEM);
+		q_page = alloc_page(GFP_NOFS | __GFP_HIGHMEM | __GFP_MOVABLE);
 		if (!q_page) {
 			__free_page(p_page);
 			goto cleanup;

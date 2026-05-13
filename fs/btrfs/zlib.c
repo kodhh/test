@@ -36,6 +36,7 @@ struct workspace {
 	z_stream strm;
 	char *buf;
 	struct list_head list;
+	unsigned int level;
 };
 
 static void zlib_free_workspace(struct list_head *ws)
@@ -94,7 +95,7 @@ static int zlib_compress_pages(struct list_head *ws,
 	*total_out = 0;
 	*total_in = 0;
 
-	if (Z_OK != zlib_deflateInit(&workspace->strm, 3)) {
+	if (Z_OK != zlib_deflateInit(&workspace->strm, workspace->level)) {
 		pr_warn("BTRFS: deflateInit failed\n");
 		ret = -EIO;
 		goto out;
@@ -106,7 +107,7 @@ static int zlib_compress_pages(struct list_head *ws,
 	in_page = find_get_page(mapping, start >> PAGE_SHIFT);
 	data_in = kmap(in_page);
 
-	out_page = alloc_page(GFP_NOFS | __GFP_HIGHMEM);
+	out_page = alloc_page(GFP_NOFS | __GFP_HIGHMEM | __GFP_MOVABLE);
 	if (out_page == NULL) {
 		ret = -ENOMEM;
 		goto out;
@@ -148,7 +149,7 @@ static int zlib_compress_pages(struct list_head *ws,
 				ret = -E2BIG;
 				goto out;
 			}
-			out_page = alloc_page(GFP_NOFS | __GFP_HIGHMEM);
+			out_page = alloc_page(GFP_NOFS | __GFP_HIGHMEM | __GFP_MOVABLE);
 			if (out_page == NULL) {
 				ret = -ENOMEM;
 				goto out;
@@ -403,10 +404,22 @@ next:
 	return ret;
 }
 
+static void zlib_set_level(struct list_head *ws, unsigned int type)
+{
+	struct workspace *workspace = list_entry(ws, struct workspace, list);
+	unsigned int level = (type & 0xF0) >> 4;
+
+	if (level >= 1 && level <= 9)
+		workspace->level = level;
+	else
+		workspace->level = 3;
+}
+
 const struct btrfs_compress_op btrfs_zlib_compress = {
 	.alloc_workspace	= zlib_alloc_workspace,
 	.free_workspace		= zlib_free_workspace,
 	.compress_pages		= zlib_compress_pages,
 	.decompress_biovec	= zlib_decompress_biovec,
 	.decompress		= zlib_decompress,
+	.set_level		= zlib_set_level,
 };

@@ -4830,7 +4830,7 @@ struct extent_buffer *btrfs_clone_extent_buffer(struct extent_buffer *src)
 		return NULL;
 
 	for (i = 0; i < num_pages; i++) {
-		p = alloc_page(GFP_NOFS);
+		p = alloc_page(GFP_NOFS | __GFP_MOVABLE);
 		if (!p) {
 			btrfs_release_extent_buffer(new);
 			return NULL;
@@ -4862,7 +4862,7 @@ struct extent_buffer *__alloc_dummy_extent_buffer(struct btrfs_fs_info *fs_info,
 		return NULL;
 
 	for (i = 0; i < num_pages; i++) {
-		eb->pages[i] = alloc_page(GFP_NOFS);
+		eb->pages[i] = alloc_page(GFP_NOFS | __GFP_MOVABLE);
 		if (!eb->pages[i])
 			goto err;
 	}
