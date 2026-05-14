@@ -99,7 +99,7 @@ static ssize_t show_truinst(struct device *dev, struct device_attribute *attr,
 	if (swi_tru_install == TRU_FORCE_MS) {
 		result = snprintf(buf, PAGE_SIZE, "Forced Mass Storage\n");
 	} else {
-		swocInfo = kmalloc(sizeof(struct swoc_info), GFP_KERNEL);
+		swocInfo = kmalloc(sizeof(struct swoc_info), GFP_KERNEL | __GFP_NOWARN);
 		if (!swocInfo) {
 			snprintf(buf, PAGE_SIZE, "Error\n");
 			return -ENOMEM;
@@ -155,7 +155,7 @@ int sierra_ms_init(struct us_data *us)
 		usb_stor_dbg(us, "SWIMS: Normal SWoC Logic\n");
 
 		swocInfo = kmalloc(sizeof(struct swoc_info),
-				GFP_KERNEL);
+				GFP_KERNEL | __GFP_NOWARN);
 		if (!swocInfo)
 			return -ENOMEM;
 

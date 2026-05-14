@@ -4814,7 +4814,7 @@ static int __btrfs_alloc_chunk(struct btrfs_trans_handle *trans,
 	stripe_size = div_u64(stripe_size, raid_stripe_len);
 	stripe_size *= raid_stripe_len;
 
-	map = kmalloc(map_lookup_size(num_stripes), GFP_NOFS);
+	map = kmalloc(map_lookup_size(num_stripes), GFP_NOFS | __GFP_NOWARN);
 	if (!map) {
 		ret = -ENOMEM;
 		goto error;
@@ -4947,7 +4947,7 @@ int btrfs_finish_chunk_alloc(struct btrfs_trans_handle *trans,
 	item_size = btrfs_chunk_item_size(map->num_stripes);
 	stripe_size = em->orig_block_len;
 
-	chunk = kzalloc(item_size, GFP_NOFS);
+	chunk = kzalloc(item_size, GFP_NOFS | __GFP_NOWARN);
 	if (!chunk) {
 		ret = -ENOMEM;
 		goto out;
@@ -5975,7 +5975,7 @@ int btrfs_rmap_block(struct btrfs_fs_info *fs_info,
 		rmap_len = map->stripe_len * nr_data_stripes(map);
 	}
 
-	buf = kcalloc(map->num_stripes, sizeof(u64), GFP_NOFS);
+	buf = kcalloc(map->num_stripes, sizeof(u64), GFP_NOFS | __GFP_NOWARN);
 	BUG_ON(!buf); /* -ENOMEM */
 
 	for (i = 0; i < map->num_stripes; i++) {
@@ -6495,7 +6495,7 @@ static int read_one_chunk(struct btrfs_root *root, struct btrfs_key *key,
 	em = alloc_extent_map();
 	if (!em)
 		return -ENOMEM;
-	map = kmalloc(map_lookup_size(num_stripes), GFP_NOFS);
+	map = kmalloc(map_lookup_size(num_stripes), GFP_NOFS | __GFP_NOWARN);
 	if (!map) {
 		free_extent_map(em);
 		return -ENOMEM;

@@ -2539,7 +2539,7 @@ static inline void *f2fs_kmalloc(struct f2fs_sb_info *sbi,
 		return NULL;
 	}
 #endif
-	return kmalloc(size, flags);
+	return kmalloc(size, flags | __GFP_NOWARN);
 }
 
 static inline void *kvmalloc(size_t size, gfp_t flags)

@@ -64,7 +64,7 @@ cifs_build_path_to_root(struct smb_vol *vol, struct cifs_sb_info *cifs_sb,
 	else
 		dfsplen = 0;
 
-	full_path = kmalloc(dfsplen + pplen + 1, GFP_KERNEL);
+	full_path = kmalloc(dfsplen + pplen + 1, GFP_KERNEL | __GFP_NOWARN);
 	if (full_path == NULL)
 		return full_path;
 
@@ -115,7 +115,7 @@ cifs_bp_rename_retry:
 	}
 	rcu_read_unlock();
 
-	full_path = kmalloc(namelen+1, GFP_KERNEL);
+	full_path = kmalloc(namelen+1, GFP_KERNEL | __GFP_NOWARN);
 	if (full_path == NULL)
 		return full_path;
 	full_path[namelen] = 0;	/* trailing null */

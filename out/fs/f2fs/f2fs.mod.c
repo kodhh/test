@@ -179,7 +179,6 @@ __attribute__((section("__versions"))) = {
 	{ 0x3ad698ac, __VMLINUX_SYMBOL_STR(blkdev_get_by_path) },
 	{ 0x11453b67, __VMLINUX_SYMBOL_STR(dquot_enable) },
 	{ 0xaea1d1d9, __VMLINUX_SYMBOL_STR(seq_putc) },
-	{ 0x33f6b4b0, __VMLINUX_SYMBOL_STR(security_inode_init_security) },
 	{ 0x5a921311, __VMLINUX_SYMBOL_STR(strncmp) },
 	{ 0xd69ef97d, __VMLINUX_SYMBOL_STR(posix_acl_alloc) },
 	{ 0xd985dc99, __VMLINUX_SYMBOL_STR(mempool_free_pages) },

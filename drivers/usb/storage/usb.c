@@ -470,12 +470,12 @@ static int associate_dev(struct us_data *us, struct usb_interface *intf)
 	usb_set_intfdata(intf, us);
 
 	/* Allocate the control/setup and DMA-mapped buffers */
-	us->cr = kmalloc(sizeof(*us->cr), GFP_KERNEL);
+	us->cr = kmalloc(sizeof(*us->cr), GFP_KERNEL | __GFP_NOWARN);
 	if (!us->cr)
 		return -ENOMEM;
 
 	us->iobuf = usb_alloc_coherent(us->pusb_dev, US_IOBUF_SIZE,
-			GFP_KERNEL, &us->iobuf_dma);
+			GFP_KERNEL | __GFP_NOWARN, &us->iobuf_dma);
 	if (!us->iobuf) {
 		usb_stor_dbg(us, "I/O buffer allocation failed\n");
 		return -ENOMEM;

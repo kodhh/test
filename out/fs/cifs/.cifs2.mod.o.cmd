@@ -1,8 +1,8 @@
-cmd_fs/cifs/cifs2.mod.o := aarch64-linux-gnu-gcc -Wp,-MD,fs/cifs/.cifs2.mod.o.d -nostdinc -isystem /usr/lib/gcc-cross/aarch64-linux-gnu/13/include -I../arch/arm64/include -I./arch/arm64/include/generated/uapi -I./arch/arm64/include/generated  -I../include -I./include -I../arch/arm64/include/uapi -I../include/uapi -I./include/generated/uapi -include ../include/linux/kconfig.h  -D__KERNEL__  -I../arch/arm64/include  -I../drivers/mstar2 -mlittle-endian -Wl,-fix-cortex-a53-843419 -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fshort-wchar -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -std=gnu89 -fno-peephole2 -fno-PIE -mgeneral-regs-only -DCONFIG_AS_LSE=1 -fno-asynchronous-unwind-tables -mpc-relative-literal-loads -fno-pic -fno-delete-null-pointer-checks -Wno-frame-address -Wno-format-truncation -Wno-format-overflow -Wno-int-in-bool-context -Wno-attribute-alias -O2 -DCC_HAVE_ASM_GOTO -Wframe-larger-than=1536 -fstack-protector-strong -Wno-unused-but-set-variable -Wno-unused-const-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -fno-var-tracking-assignments -g -femit-struct-debug-baseonly -fno-var-tracking -Wdeclaration-after-statement -Wno-pointer-sign -Wno-stringop-truncation -fno-strict-overflow -fno-merge-all-constants -fmerge-constants -fno-stack-check -fconserve-stack -Werror=implicit-int -Werror=strict-prototypes -Werror=date-time -Werror=incompatible-pointer-types -Wno-packed-not-aligned  -DKBUILD_BASENAME='"cifs2.mod"'  -DKBUILD_MODNAME='"cifs2"' -DMODULE -mcmodel=large  -c -o fs/cifs/cifs2.mod.o fs/cifs/cifs2.mod.c
+cmd_fs/cifs//cifs2.mod.o := aarch64-linux-gnu-gcc -Wp,-MD,fs/cifs//.cifs2.mod.o.d -nostdinc -isystem /usr/lib/gcc-cross/aarch64-linux-gnu/13/include -I../arch/arm64/include -I./arch/arm64/include/generated/uapi -I./arch/arm64/include/generated  -I../include -I./include -I../arch/arm64/include/uapi -I../include/uapi -I./include/generated/uapi -include ../include/linux/kconfig.h -I../fs/cifs/ -Ifs/cifs/ -D__KERNEL__  -I../arch/arm64/include  -I../drivers/mstar2 -mlittle-endian -Wl,-fix-cortex-a53-843419 -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fshort-wchar -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -std=gnu89 -fno-peephole2 -fno-PIE -mgeneral-regs-only -DCONFIG_AS_LSE=1 -fno-asynchronous-unwind-tables -mpc-relative-literal-loads -fno-pic -fno-delete-null-pointer-checks -Wno-frame-address -Wno-format-truncation -Wno-format-overflow -Wno-int-in-bool-context -Wno-attribute-alias -O2 -DCC_HAVE_ASM_GOTO -Wframe-larger-than=1536 -fstack-protector-strong -Wno-unused-but-set-variable -Wno-unused-const-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -fno-var-tracking-assignments -g -femit-struct-debug-baseonly -fno-var-tracking -Wdeclaration-after-statement -Wno-pointer-sign -Wno-stringop-truncation -fno-strict-overflow -fno-merge-all-constants -fmerge-constants -fno-stack-check -fconserve-stack -Werror=implicit-int -Werror=strict-prototypes -Werror=date-time -Werror=incompatible-pointer-types -Wno-packed-not-aligned  -DKBUILD_BASENAME='"cifs2.mod"'  -DKBUILD_MODNAME='"cifs2"' -DMODULE -mcmodel=large  -c -o fs/cifs//cifs2.mod.o fs/cifs//cifs2.mod.c
 
-source_fs/cifs/cifs2.mod.o := fs/cifs/cifs2.mod.c
+source_fs/cifs//cifs2.mod.o := fs/cifs//cifs2.mod.c
 
-deps_fs/cifs/cifs2.mod.o := \
+deps_fs/cifs//cifs2.mod.o := \
     $(wildcard include/config/module/unload.h) \
   ../include/linux/module.h \
     $(wildcard include/config/modules.h) \
@@ -967,6 +967,6 @@ deps_fs/cifs/cifs2.mod.o := \
   ../include/linux/vermagic.h \
   include/generated/utsrelease.h \
 
-fs/cifs/cifs2.mod.o: $(deps_fs/cifs/cifs2.mod.o)
+fs/cifs//cifs2.mod.o: $(deps_fs/cifs//cifs2.mod.o)
 
-$(deps_fs/cifs/cifs2.mod.o):
+$(deps_fs/cifs//cifs2.mod.o):

@@ -981,7 +981,7 @@ static struct btrfs_raid_bio *alloc_rbio(struct btrfs_root *root,
 
 	rbio = kzalloc(sizeof(*rbio) + num_pages * sizeof(struct page *) * 2 +
 		       DIV_ROUND_UP(stripe_npages, BITS_PER_LONG) *
-		       sizeof(long), GFP_NOFS);
+		       sizeof(long), GFP_NOFS | __GFP_NOWARN);
 	if (!rbio)
 		return ERR_PTR(-ENOMEM);
 

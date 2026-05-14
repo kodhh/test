@@ -342,7 +342,8 @@ int btrfs_submit_compressed_write(struct inode *inode, u64 start,
 	int skip_sum = BTRFS_I(inode)->flags & BTRFS_INODE_NODATASUM;
 
 	WARN_ON(start & ((u64)PAGE_SIZE - 1));
-	cb = kmalloc(compressed_bio_size(root, compressed_len), GFP_NOFS);
+	cb = kmalloc(compressed_bio_size(root, compressed_len),
+		     GFP_NOFS | __GFP_NOWARN);
 	if (!cb)
 		return -ENOMEM;
 	atomic_set(&cb->pending_bios, 0);
@@ -358,7 +359,7 @@ int btrfs_submit_compressed_write(struct inode *inode, u64 start,
 
 	bdev = BTRFS_I(inode)->root->fs_info->fs_devices->latest_bdev;
 
-	bio = compressed_bio_alloc(bdev, first_byte, GFP_NOFS);
+	bio = compressed_bio_alloc(bdev, first_byte, GFP_NOFS | __GFP_NOWARN);
 	if (!bio) {
 		kfree(cb);
 		return -ENOMEM;
@@ -392,14 +393,14 @@ int btrfs_submit_compressed_write(struct inode *inode, u64 start,
 			 * freed before we're done setting it up
 			 */
 			atomic_inc(&cb->pending_bios);
-			ret = btrfs_bio_wq_end_io(root->fs_info, bio,
-					BTRFS_WQ_ENDIO_DATA);
-			BUG_ON(ret); /* -ENOMEM */
+		ret = btrfs_bio_wq_end_io(root->fs_info, bio,
+				BTRFS_WQ_ENDIO_DATA);
+			WARN_ON(ret);
 
 			if (!skip_sum) {
 				ret = btrfs_csum_one_bio(root, inode, bio,
 							 start, 1);
-				BUG_ON(ret); /* -ENOMEM */
+				WARN_ON(ret);
 			}
 
 			ret = btrfs_map_bio(root, bio, 0, 1);
@@ -410,8 +411,10 @@ int btrfs_submit_compressed_write(struct inode *inode, u64 start,
 
 			bio_put(bio);
 
-			bio = compressed_bio_alloc(bdev, first_byte, GFP_NOFS);
-			BUG_ON(!bio);
+			bio = compressed_bio_alloc(bdev, first_byte,
+						   GFP_NOFS | __GFP_NOWARN);
+			if (!bio)
+				break;
 			bio_set_op_attrs(bio, REQ_OP_WRITE, 0);
 			bio->bi_private = cb;
 			bio->bi_end_io = end_compressed_bio_write;
@@ -429,11 +432,17 @@ int btrfs_submit_compressed_write(struct inode *inode, u64 start,
 	bio_get(bio);
 
 	ret = btrfs_bio_wq_end_io(root->fs_info, bio, BTRFS_WQ_ENDIO_DATA);
-	BUG_ON(ret); /* -ENOMEM */
+	if (ret) {
+		bio_put(bio);
+		return 0;
+	}
 
 	if (!skip_sum) {
 		ret = btrfs_csum_one_bio(root, inode, bio, start, 1);
-		BUG_ON(ret); /* -ENOMEM */
+		if (ret) {
+			bio_put(bio);
+			return 0;
+		}
 	}
 
 	ret = btrfs_map_bio(root, bio, 0, 1);
@@ -603,7 +612,8 @@ int btrfs_submit_compressed_read(struct inode *inode, struct bio *bio,
 		return -EIO;
 
 	compressed_len = em->block_len;
-	cb = kmalloc(compressed_bio_size(root, compressed_len), GFP_NOFS);
+	cb = kmalloc(compressed_bio_size(root, compressed_len),
+		     GFP_NOFS | __GFP_NOWARN);
 	if (!cb)
 		goto out;
 
@@ -627,7 +637,7 @@ int btrfs_submit_compressed_read(struct inode *inode, struct bio *bio,
 
 	nr_pages = DIV_ROUND_UP(compressed_len, PAGE_SIZE);
 	cb->compressed_pages = kcalloc(nr_pages, sizeof(struct page *),
-				       GFP_NOFS);
+				       GFP_NOFS | __GFP_NOWARN);
 	if (!cb->compressed_pages)
 		goto fail1;
 
@@ -652,7 +662,8 @@ int btrfs_submit_compressed_read(struct inode *inode, struct bio *bio,
 	uncompressed_len = bio->bi_vcnt * PAGE_SIZE;
 	cb->len = uncompressed_len;
 
-	comp_bio = compressed_bio_alloc(bdev, cur_disk_byte, GFP_NOFS);
+	comp_bio = compressed_bio_alloc(bdev, cur_disk_byte,
+					GFP_NOFS | __GFP_NOWARN);
 	if (!comp_bio)
 		goto fail2;
 	bio_set_op_attrs (comp_bio, REQ_OP_READ, 0);
@@ -679,7 +690,7 @@ int btrfs_submit_compressed_read(struct inode *inode, struct bio *bio,
 
 			ret = btrfs_bio_wq_end_io(root->fs_info, comp_bio,
 					BTRFS_WQ_ENDIO_DATA);
-			BUG_ON(ret); /* -ENOMEM */
+			WARN_ON(ret);
 
 			/*
 			 * inc the count before we submit the bio so
@@ -692,7 +703,7 @@ int btrfs_submit_compressed_read(struct inode *inode, struct bio *bio,
 			if (!(BTRFS_I(inode)->flags & BTRFS_INODE_NODATASUM)) {
 				ret = btrfs_lookup_bio_sums(root, inode,
 							comp_bio, sums);
-				BUG_ON(ret); /* -ENOMEM */
+				WARN_ON(ret);
 			}
 			sums += DIV_ROUND_UP(comp_bio->bi_iter.bi_size,
 					     root->sectorsize);
@@ -706,8 +717,9 @@ int btrfs_submit_compressed_read(struct inode *inode, struct bio *bio,
 			bio_put(comp_bio);
 
 			comp_bio = compressed_bio_alloc(bdev, cur_disk_byte,
-							GFP_NOFS);
-			BUG_ON(!comp_bio);
+							GFP_NOFS | __GFP_NOWARN);
+			if (!comp_bio)
+				break;
 			bio_set_op_attrs(comp_bio, REQ_OP_READ, 0);
 			comp_bio->bi_private = cb;
 			comp_bio->bi_end_io = end_compressed_bio_read;

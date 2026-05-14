@@ -138,7 +138,6 @@ kernel/net/sched/sch_htb.ko
 kernel/net/sched/cls_u32.ko
 kernel/net/sched/em_u32.ko
 kernel/net/unix/unix.ko
-kernel/net/wireless/cfg80211.ko
 kernel/net/xfrm/xfrm_algo.ko
 kernel/net/xfrm/xfrm_user.ko
 kernel/net/xfrm/xfrm_ipcomp.ko

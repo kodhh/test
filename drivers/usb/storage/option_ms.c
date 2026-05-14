@@ -52,7 +52,7 @@ static int option_rezero(struct us_data *us)
 
 	usb_stor_dbg(us, "Option MS: %s\n", "DEVICE MODE SWITCH");
 
-	buffer = kzalloc(RESPONSE_LEN, GFP_KERNEL);
+	buffer = kzalloc(RESPONSE_LEN, GFP_KERNEL | __GFP_NOWARN);
 	if (buffer == NULL)
 		return USB_STOR_TRANSPORT_ERROR;
 
@@ -98,7 +98,7 @@ static int option_inquiry(struct us_data *us)
 
 	usb_stor_dbg(us, "Option MS: %s\n", "device inquiry for vendor name");
 
-	buffer = kzalloc(0x24, GFP_KERNEL);
+	buffer = kzalloc(0x24, GFP_KERNEL | __GFP_NOWARN);
 	if (buffer == NULL)
 		return USB_STOR_TRANSPORT_ERROR;
 

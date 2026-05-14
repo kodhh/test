@@ -2154,7 +2154,8 @@ cifs_writedata_alloc(unsigned int nr_pages, work_func_t complete)
 
 	/* writedata + number of page pointers */
 	wdata = kzalloc(sizeof(*wdata) +
-			sizeof(struct page *) * nr_pages, GFP_NOFS);
+			sizeof(struct page *) * nr_pages,
+			GFP_NOFS | __GFP_NOWARN);
 	if (wdata != NULL) {
 		kref_init(&wdata->refcount);
 		INIT_LIST_HEAD(&wdata->list);
@@ -3078,7 +3079,7 @@ cifs_readdata_alloc(unsigned int nr_pages, work_func_t complete)
 	struct cifs_readdata *rdata;
 
 	rdata = kzalloc(sizeof(*rdata) + (sizeof(struct page *) * nr_pages),
-			GFP_KERNEL);
+			GFP_KERNEL | __GFP_NOWARN);
 	if (rdata != NULL) {
 		kref_init(&rdata->refcount);
 		INIT_LIST_HEAD(&rdata->list);

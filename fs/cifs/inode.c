@@ -1078,7 +1078,7 @@ struct inode *cifs_root_iget(struct super_block *sb)
 	if ((cifs_sb->mnt_cifs_flags & CIFS_MOUNT_USE_PREFIX_PATH)
 	    && cifs_sb->prepath) {
 		len = strlen(cifs_sb->prepath);
-		path = kzalloc(len + 2 /* leading sep + null */, GFP_KERNEL);
+		path = kzalloc(len + 2 /* leading sep + null */, GFP_KERNEL | __GFP_NOWARN);
 		if (path == NULL)
 			return ERR_PTR(-ENOMEM);
 		path[0] = '/';

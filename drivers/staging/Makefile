@@ -45,4 +45,4 @@ obj-$(CONFIG_BCM2708_VCHIQ)	+= vc04_services/
 obj-$(CONFIG_AMAZON)		+= amazon/
 obj-m            += rtl8188fu/
 obj-m            += rtl8821CU/
-obj-m            += rt5572sta/
+#obj-m            += rt5572sta/

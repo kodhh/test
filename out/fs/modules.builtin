@@ -1,5 +1,6 @@
 kernel/fs/binfmt_script.ko
 kernel/fs/mbcache.ko
+kernel/fs/cifs/cifs2.ko
 kernel/fs/configfs/configfs.ko
 kernel/fs/crypto/fscrypto.ko
 kernel/fs/ext2/ext2.ko

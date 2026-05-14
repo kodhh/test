@@ -169,4 +169,4 @@ MODULE_ALIAS("usb:v2357p010Cd*dc*dsc*dp*ic*isc*ip*in*");
 MODULE_ALIAS("usb:v0DF6p0076d*dc*dsc*dp*ic*isc*ip*in*");
 MODULE_ALIAS("usb:v0BDApFFEFd*dc*dsc*dp*ic*isc*ip*in*");
 
-MODULE_INFO(srcversion, "DEDB7C2785319ACA4EAFA01");
+MODULE_INFO(srcversion, "4E673B3A6194F803770CAAF");

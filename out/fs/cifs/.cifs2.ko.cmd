@@ -1,1 +1,1 @@
-cmd_fs/cifs/cifs2.ko := aarch64-linux-gnu-ld -EL -fix-cortex-a53-843419 -r  -T ../scripts/module-common.lds -T ../arch/arm64/kernel/module.lds --build-id  -o fs/cifs/cifs2.ko fs/cifs/cifs2.o fs/cifs/cifs2.mod.o ;  true
+cmd_fs/cifs//cifs2.ko := aarch64-linux-gnu-ld -EL -fix-cortex-a53-843419 -r  -T ../scripts/module-common.lds -T ../arch/arm64/kernel/module.lds --build-id  -o fs/cifs//cifs2.ko fs/cifs//cifs2.o fs/cifs//cifs2.mod.o ;  true

@@ -439,7 +439,7 @@ smb3_query_mf_symlink(unsigned int xid, struct cifs_tcon *tcon,
 		return -ENOMEM;
 
 	pfile_info = kzalloc(sizeof(struct smb2_file_all_info) + PATH_MAX * 2,
-			     GFP_KERNEL);
+			     GFP_KERNEL | __GFP_NOWARN);
 
 	if (pfile_info == NULL) {
 		kfree(utf16_path);

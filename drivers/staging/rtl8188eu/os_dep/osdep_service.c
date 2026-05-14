@@ -36,14 +36,14 @@ inline int RTW_STATUS_CODE(int error_code)
 
 u8 *_rtw_malloc(u32 sz)
 {
-	return kmalloc(sz, in_interrupt() ? GFP_ATOMIC : GFP_KERNEL);
+	return kmalloc(sz, (in_interrupt() ? GFP_ATOMIC : GFP_KERNEL) | __GFP_NOWARN);
 }
 
 void *rtw_malloc2d(int h, int w, int size)
 {
 	int j;
 
-	void **a = kzalloc(h*sizeof(void *) + h*w*size, GFP_KERNEL);
+	void **a = kzalloc(h*sizeof(void *) + h*w*size, GFP_KERNEL | __GFP_NOWARN);
 	if (!a) {
 		pr_info("%s: alloc memory fail!\n", __func__);
 		return NULL;

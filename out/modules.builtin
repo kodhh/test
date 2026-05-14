@@ -2,6 +2,7 @@ kernel/kernel/configs.ko
 kernel/mm/zsmalloc.ko
 kernel/fs/binfmt_script.ko
 kernel/fs/mbcache.ko
+kernel/fs/cifs/cifs2.ko
 kernel/fs/configfs/configfs.ko
 kernel/fs/crypto/fscrypto.ko
 kernel/fs/ext2/ext2.ko
@@ -71,7 +72,6 @@ kernel/crypto/drbg.ko
 kernel/crypto/jitterentropy_rng.ko
 kernel/crypto/ghash-generic.ko
 kernel/block/cfq-iosched.ko
-kernel/drivers/base/firmware_class.ko
 kernel/drivers/base/regmap/regmap-i2c.ko
 kernel/drivers/base/regmap/regmap-spi.ko
 kernel/drivers/base/regmap/regmap-mmio.ko
@@ -90,7 +90,6 @@ kernel/drivers/gpio/gpio-generic.ko
 kernel/drivers/gpu/drm/drm_kms_helper.ko
 kernel/drivers/gpu/drm/drm.ko
 kernel/drivers/hid/hid.ko
-kernel/drivers/hid/uhid.ko
 kernel/drivers/hid/hid-generic.ko
 kernel/drivers/hid/hid-aspen.ko
 kernel/drivers/hid/hid-magneto.ko
@@ -108,7 +107,6 @@ kernel/drivers/input/serio/serio.ko
 kernel/drivers/input/serio/serport.ko
 kernel/drivers/input/serio/libps2.ko
 kernel/drivers/iommu/iova.ko
-kernel/drivers/ipack/ipack.ko
 kernel/drivers/md/dm-mod.ko
 kernel/drivers/md/dm-bufio.ko
 kernel/drivers/md/dm-crypt.ko
@@ -246,7 +244,6 @@ kernel/drivers/media/tuners/tda18271.ko
 kernel/drivers/media/tuners/xc5000.ko
 kernel/drivers/media/tuners/xc4000.ko
 kernel/drivers/media/tuners/mc44s803.ko
-kernel/drivers/media/usb/gspca/gspca_main.ko
 kernel/drivers/media/usb/uvc/uvcvideo.ko
 kernel/drivers/media/v4l2-core/videodev.ko
 kernel/drivers/media/v4l2-core/v4l2-common.ko
@@ -470,7 +467,6 @@ kernel/net/sched/sch_htb.ko
 kernel/net/sched/cls_u32.ko
 kernel/net/sched/em_u32.ko
 kernel/net/unix/unix.ko
-kernel/net/wireless/cfg80211.ko
 kernel/net/xfrm/xfrm_algo.ko
 kernel/net/xfrm/xfrm_user.ko
 kernel/net/xfrm/xfrm_ipcomp.ko

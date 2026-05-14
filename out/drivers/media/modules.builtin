@@ -131,7 +131,6 @@ kernel/drivers/media/tuners/tda18271.ko
 kernel/drivers/media/tuners/xc5000.ko
 kernel/drivers/media/tuners/xc4000.ko
 kernel/drivers/media/tuners/mc44s803.ko
-kernel/drivers/media/usb/gspca/gspca_main.ko
 kernel/drivers/media/usb/uvc/uvcvideo.ko
 kernel/drivers/media/v4l2-core/videodev.ko
 kernel/drivers/media/v4l2-core/v4l2-common.ko

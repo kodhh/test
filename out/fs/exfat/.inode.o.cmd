@@ -1158,11 +1158,6 @@ deps_fs/exfat/inode.o := \
   ../include/uapi/linux/random.h \
   ../include/linux/irqnr.h \
   ../include/uapi/linux/irqnr.h \
-  ../include/linux/migrate.h \
-  ../include/linux/mempolicy.h \
-    $(wildcard include/config/tmpfs.h) \
-    $(wildcard include/config/arch/enable/hugepage/migration.h) \
-  ../include/uapi/linux/mempolicy.h \
   ../fs/exfat/exfat_fs.h \
     $(wildcard include/config/exfat/virtual/xattr.h) \
   ../include/linux/nls.h \

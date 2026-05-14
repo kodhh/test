@@ -4,7 +4,6 @@ source_fs/cifs/file.o := ../fs/cifs/file.c
 
 deps_fs/cifs/file.o := \
     $(wildcard include/config/cifs/allow/insecure/legacy.h) \
-    $(wildcard include/config/mp/cma/patch/migration/filter.h) \
   ../include/linux/fs.h \
     $(wildcard include/config/sysfs.h) \
     $(wildcard include/config/smp.h) \
@@ -25,6 +24,7 @@ deps_fs/cifs/file.o := \
     $(wildcard include/config/block.h) \
     $(wildcard include/config/debug/lock/alloc.h) \
     $(wildcard include/config/migration.h) \
+    $(wildcard include/config/mp/cma/patch/migration/filter.h) \
   ../include/linux/linkage.h \
   ../include/linux/compiler.h \
     $(wildcard include/config/sparse/rcu/pointer.h) \
@@ -1175,11 +1175,6 @@ deps_fs/cifs/file.o := \
     $(wildcard include/config/eventfd.h) \
   ../include/linux/node.h \
     $(wildcard include/config/memory/hotplug/sparse.h) \
-  ../include/linux/migrate.h \
-  ../include/linux/mempolicy.h \
-    $(wildcard include/config/tmpfs.h) \
-    $(wildcard include/config/arch/enable/hugepage/migration.h) \
-  ../include/uapi/linux/mempolicy.h \
   ../fs/cifs/cifsfs.h \
     $(wildcard include/config/cifs/dfs/upcall.h) \
     $(wildcard include/config/cifs/xattr.h) \

@@ -1156,11 +1156,6 @@ deps_fs/ntfs3/inode.o := \
   ../include/uapi/linux/uio.h \
   include/generated/uapi/linux/version.h \
   ../include/linux/writeback.h \
-  ../include/linux/migrate.h \
-  ../include/linux/mempolicy.h \
-    $(wildcard include/config/tmpfs.h) \
-    $(wildcard include/config/arch/enable/hugepage/migration.h) \
-  ../include/uapi/linux/mempolicy.h \
   ../fs/ntfs3/debug.h \
   ../fs/ntfs3/ntfs.h \
   ../fs/ntfs3/compat.h \

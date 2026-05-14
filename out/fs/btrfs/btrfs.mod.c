@@ -95,6 +95,7 @@ __attribute__((section("__versions"))) = {
 	{ 0xaf507de1, __VMLINUX_SYMBOL_STR(__arch_copy_from_user) },
 	{ 0xd1c2549b, __VMLINUX_SYMBOL_STR(filemap_write_and_wait) },
 	{ 0xb81b61e5, __VMLINUX_SYMBOL_STR(__lock_buffer) },
+	{ 0x20000329, __VMLINUX_SYMBOL_STR(simple_strtoul) },
 	{ 0x53351f39, __VMLINUX_SYMBOL_STR(touch_atime) },
 	{ 0xe8ea02e0, __VMLINUX_SYMBOL_STR(deactivate_locked_super) },
 	{ 0xc0a3d105, __VMLINUX_SYMBOL_STR(find_next_bit) },
