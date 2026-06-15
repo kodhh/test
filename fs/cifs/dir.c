@@ -47,7 +47,7 @@ renew_parental_timestamps(struct dentry *direntry)
 
 char *
 cifs_build_path_to_root(struct smb_vol *vol, struct cifs_sb_info *cifs_sb,
-			struct cifs_tcon *tcon)
+			struct cifs_tcon *tcon, int add_treename)
 {
 	int pplen = vol->prepath ? strlen(vol->prepath) + 1 : 0;
 	int dfsplen;
@@ -59,12 +59,12 @@ cifs_build_path_to_root(struct smb_vol *vol, struct cifs_sb_info *cifs_sb,
 		return full_path;
 	}
 
-	if (tcon->Flags & SMB_SHARE_IS_IN_DFS)
+	if (add_treename)
 		dfsplen = strnlen(tcon->treeName, MAX_TREE_SIZE + 1);
 	else
 		dfsplen = 0;
 
-	full_path = kmalloc(dfsplen + pplen + 1, GFP_KERNEL | __GFP_NOWARN);
+	full_path = kmalloc(dfsplen + pplen + 1, GFP_KERNEL);
 	if (full_path == NULL)
 		return full_path;
 
@@ -81,6 +81,17 @@ cifs_build_path_to_root(struct smb_vol *vol, struct cifs_sb_info *cifs_sb,
 char *
 build_path_from_dentry(struct dentry *direntry)
 {
+	struct cifs_sb_info *cifs_sb = CIFS_SB(direntry->d_sb);
+	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
+	bool prefix = tcon->Flags & SMB_SHARE_IS_IN_DFS;
+
+	return build_path_from_dentry_optional_prefix(direntry,
+						      prefix);
+}
+
+char *
+build_path_from_dentry_optional_prefix(struct dentry *direntry, bool prefix)
+{
 	struct dentry *temp;
 	int namelen;
 	int dfsplen;
@@ -92,7 +103,7 @@ build_path_from_dentry(struct dentry *direntry)
 	unsigned seq;
 
 	dirsep = CIFS_DIR_SEP(cifs_sb);
-	if (tcon->Flags & SMB_SHARE_IS_IN_DFS)
+	if (prefix)
 		dfsplen = strnlen(tcon->treeName, MAX_TREE_SIZE + 1);
 	else
 		dfsplen = 0;
@@ -115,7 +126,7 @@ cifs_bp_rename_retry:
 	}
 	rcu_read_unlock();
 
-	full_path = kmalloc(namelen+1, GFP_KERNEL | __GFP_NOWARN);
+	full_path = kmalloc(namelen+1, GFP_KERNEL);
 	if (full_path == NULL)
 		return full_path;
 	full_path[namelen] = 0;	/* trailing null */
@@ -222,9 +233,9 @@ cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned int xid,
 	int desired_access;
 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
 	struct cifs_tcon *tcon = tlink_tcon(tlink);
-	struct inode *newinode = NULL;
 	char *full_path = NULL;
 	FILE_ALL_INFO *buf = NULL;
+	struct inode *newinode = NULL;
 	int disposition;
 	struct TCP_Server_Info *server = tcon->ses->server;
 	struct cifs_open_parms oparms;
@@ -360,18 +371,18 @@ cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned int xid,
 	oparms.path = full_path;
 	oparms.fid = fid;
 	oparms.reconnect = false;
-
+	oparms.mode = mode;
 	rc = server->ops->open(xid, &oparms, oplock, buf);
 	if (rc) {
 		cifs_dbg(FYI, "cifs_create returned 0x%x\n", rc);
 		goto out;
 	}
 
-#ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
 	/*
 	 * If Open reported that we actually created a file then we now have to
 	 * set the mode if possible.
 	 */
+#ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
 	if ((tcon->unix_ext) && (*oplock & CIFS_CREATE_ACTION)) {
 		struct cifs_unix_set_info_args args = {
 				.mode	= mode,
@@ -402,16 +413,19 @@ cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned int xid,
 
 		/* Could set r/o dos attribute if mode & 0222 == 0 */
 	}
+#endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
 
+#ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
 cifs_create_get_file_info:
+#endif
 	/* server might mask mode so we have to query for it */
+#ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
 	if (tcon->unix_ext)
 		rc = cifs_get_inode_info_unix(&newinode, full_path, inode->i_sb,
 					      xid);
-	else {
-#else
+	else
+#endif
 	{
-#endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
 		rc = cifs_get_inode_info(&newinode, full_path, buf, inode->i_sb,
 					 xid, fid);
 		if (newinode) {
@@ -429,10 +443,9 @@ cifs_create_get_file_info:
 			}
 		}
 	}
-
 #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
 cifs_create_set_dentry:
-#endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
+#endif
 	if (rc != 0) {
 		cifs_dbg(FYI, "Create worked, get_inode_info failed rc = %d\n",
 			 rc);
@@ -624,9 +637,7 @@ int cifs_mknod(struct inode *inode, struct dentry *direntry, umode_t mode,
 	struct cifs_tcon *tcon;
 	struct cifs_io_parms io_parms;
 	char *full_path = NULL;
-#ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
-	struct inode *newinode = NULL;
-#endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
+	struct inode *newinode __maybe_unused = NULL;
 	__u32 oplock = 0;
 	struct cifs_fid fid;
 	struct cifs_open_parms oparms;
@@ -780,21 +791,25 @@ cifs_lookup(struct inode *parent_dir_inode, struct dentry *direntry,
 	tlink = cifs_sb_tlink(cifs_sb);
 	if (IS_ERR(tlink)) {
 		free_xid(xid);
-		return (struct dentry *)tlink;
+		return ERR_CAST(tlink);
 	}
 	pTcon = tlink_tcon(tlink);
 
 	rc = check_name(direntry, pTcon);
-	if (rc)
-		goto lookup_out;
+	if (unlikely(rc)) {
+		cifs_put_tlink(tlink);
+		free_xid(xid);
+		return ERR_PTR(rc);
+	}
 
 	/* can not grab the rename sem here since it would
 	deadlock in the cases (beginning of sys_rename itself)
 	in which we already have the sb rename sem */
 	full_path = build_path_from_dentry(direntry);
 	if (full_path == NULL) {
-		rc = -ENOMEM;
-		goto lookup_out;
+		cifs_put_tlink(tlink);
+		free_xid(xid);
+		return ERR_PTR(-ENOMEM);
 	}
 
 	if (d_really_is_positive(direntry)) {
@@ -813,29 +828,25 @@ cifs_lookup(struct inode *parent_dir_inode, struct dentry *direntry,
 				parent_dir_inode->i_sb, xid, NULL);
 	}
 
-	if ((rc == 0) && (newInode != NULL)) {
-		d_add(direntry, newInode);
+	if (rc == 0) {
 		/* since paths are not looked up by component - the parent
 		   directories are presumed to be good here */
 		renew_parental_timestamps(direntry);
-
 	} else if (rc == -ENOENT) {
-		rc = 0;
 		cifs_set_time(direntry, jiffies);
-		d_add(direntry, NULL);
-	/*	if it was once a directory (but how can we tell?) we could do
-		shrink_dcache_parent(direntry); */
-	} else if (rc != -EACCES) {
-		cifs_dbg(FYI, "Unexpected lookup error %d\n", rc);
-		/* We special case check for Access Denied - since that
-		is a common return code */
+		newInode = NULL;
+	} else {
+		if (rc != -EACCES) {
+			cifs_dbg(FYI, "Unexpected lookup error %d\n", rc);
+			/* We special case check for Access Denied - since that
+			is a common return code */
+		}
+		newInode = ERR_PTR(rc);
 	}
-
-lookup_out:
 	kfree(full_path);
 	cifs_put_tlink(tlink);
 	free_xid(xid);
-	return ERR_PTR(rc);
+	return d_splice_alias(newInode, direntry);
 }
 
 static int

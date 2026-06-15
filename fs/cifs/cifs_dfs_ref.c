@@ -260,7 +260,7 @@ static struct vfsmount *cifs_dfs_do_refmount(struct dentry *mntpt,
 	if (IS_ERR(mountdata))
 		return (struct vfsmount *)mountdata;
 
-	mnt = vfs_submount(mntpt, &cifs2_fs_type, devname, mountdata);
+	mnt = vfs_submount(mntpt, &cifs_fs_type, devname, mountdata);
 	kfree(mountdata);
 	kfree(devname);
 	return mnt;
@@ -303,7 +303,9 @@ static struct vfsmount *cifs_dfs_do_automount(struct dentry *mntpt)
 	 * gives us the latter, so we must adjust the result.
 	 */
 	mnt = ERR_PTR(-ENOMEM);
-	full_path = build_path_from_dentry(mntpt);
+
+	/* always use tree name prefix */
+	full_path = build_path_from_dentry_optional_prefix(mntpt, true);
 	if (full_path == NULL)
 		goto cdda_exit;
 
